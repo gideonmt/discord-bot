@@ -29,8 +29,8 @@ To use this Discord bot, follow these simple steps:
 2. Create a `.env` file in the project directory. You can use the provided `.env.example` as a template. Fill in your bot's token and ID.
 
    ```
-   DISCORD_TOKEN=your_token_here
-   DISCORD_CLIENT_ID=your_client_id_here
+   TOKEN=YOU_BOT_TOKEN
+   CLIENT_ID=YOU_CLIENT_ID
    ```
 
 3. Install the required dependencies by running the following command in your terminal:
@@ -55,10 +55,29 @@ To use this Discord bot, follow these simple steps:
 
 ### 4. Invite the Bot to Your Server
 
+#### Creating a Discord Bot Application 
+Before you can invite your Discord bot, you'll need to create a Bot Application on the Discord Developer Portal and enable all the necessary intents. If you have already done that you can skip this step. Here are the steps:
+
+1. Visit the [Discord Developer Portal](https://discord.com/developers/applications).
+
+2. Click on the "New Application" button.
+
+3. Give your application a name.
+
+4. Navigate to the "Bot" section in the left sidebar.
+
+7. Scroll down to the "Privileged Gateway Intents" section.
+
+8. Enable all the intents under this section. These intents are required for various features of the bot. To enable these intents, simply toggle the switches to the "ON" position.
+
+9. Save your changes.
+
+#### Inviting the bot
+
 Invite the bot to your server by using the following link, replacing `<YOUR_CLIENT_ID>` with your bot's client ID:
    
    ```
-   https://discord.com/oauth2/authorize?client_id=<YOUR_CLIENT_ID>&scope=bot&permissions=8
+   https://discord.com/api/oauth2/authorize?client_id=<YOUR_CLIENT_ID>&permissions=8&scope=bot%20applications.commands
    ```
 
 Once the bot is in your server, you can start using its features and commands.
