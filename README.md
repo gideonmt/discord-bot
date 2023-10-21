@@ -12,7 +12,7 @@ This is a general purpose Discord bot designed for all types of communities.
 
 ## Dependencies
 
-- [discord.js v14](https://discord.js.org/#/): The Discord.js library is used to interact with the Discord API, allowing the bot to send and receive messages, as well as perform other actions on your server.
+- [discord.js v14](https://discord.js.org/#/): The Discord.js library is used to interact with the Discord API.
 
 ## Installation and Usage
 

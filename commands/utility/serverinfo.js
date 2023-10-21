@@ -6,14 +6,16 @@ module.exports = {
 		.setDescription('Display information about this server.'),
 	async execute(interaction, client) {
 
-		// members
-		interaction.guild.members.fetch({ withPresences: true });
-		const totalCount = interaction.guild.memberCount;
-		const memberCount = interaction.guild.members.cache.filter(member => !member.user.bot).size;
-		const botCount = interaction.guild.members.cache.filter(member => member.user.bot).size;
-		const onlineCount = interaction.guild.members.cache.filter(member => member.presence?.status === 'online').size;
+        // Fetch members with presences
+        await interaction.guild.members.fetch({ withPresences: true });
 
-		const owner = await interaction.guild.ownerId;
+        // Calculate member counts
+        const totalCount = interaction.guild.memberCount;
+        const memberCount = interaction.guild.members.cache.filter(member => !member.user.bot).size;
+        const botCount = interaction.guild.members.cache.filter(member => member.user.bot).size;
+        const onlineCount = interaction.guild.members.cache.filter(member => member.presence?.status === 'online').size;
+
+        const owner = await interaction.guild.ownerId;
 
 		// security
 		const verificationLevel = interaction.guild.verificationLevel;
@@ -22,6 +24,7 @@ module.exports = {
 		const twoFactorAuth = interaction.guild.mfaLevel;
 
 		// channels
+		await interaction.guild.channels.fetch();
 		const totalChannels = interaction.guild.channels.cache.size;
 
 		// Filter channels by type
@@ -30,7 +33,7 @@ module.exports = {
 		const textChannels = interaction.guild.channels.cache.filter(channel => channel.type === 'GUILD_TEXT').size;
 		const forumChannels = interaction.guild.channels.cache.filter(channel => channel.type === 'GUILD_NEWS').size;
 		const categories = interaction.guild.channels.cache.filter(channel => channel.type === 'GUILD_CATEGORY').size;
-		
+
 		// features
 		const serverFeatures = interaction.guild.features.join(', ');
 
