@@ -39,6 +39,7 @@ module.exports = {
 						`Display Name: \`${member.displayName}\``,
 						`User ID: \`${member.user.id}\``,
 						`Pending Member: \`${member.pending ? 'Yes' : 'No'}\``,
+						`Timeout: \`${member.communicationDisabledUntil ? 'until ' + member.communicationDisabledUntil.toLocaleString() : 'No'}\``,
 						`Booster: \`${member.premiumSince ? 'since ' + member.premiumSince.toLocaleString() : 'Nope'}\``,
 					].join("\n")
 				},
