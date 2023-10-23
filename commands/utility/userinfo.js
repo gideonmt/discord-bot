@@ -48,7 +48,11 @@ module.exports = {
 					value: roles,
 					inline: false,
 				}
-			]
+			],
+			footer: {
+				text: `${client.user.username}`,
+				icon_url: `${client.user.displayAvatarURL()}`
+			}
 		};
 
 		await interaction.reply({ embeds: [embed] });
