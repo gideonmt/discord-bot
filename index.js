@@ -1,6 +1,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
+const { Client, Events, GatewayIntentBits } = require('discord.js');
 require('dotenv').config()
 
 
@@ -13,35 +13,16 @@ const client = new Client({
 	],
 });
 
-client.commands = new Collection();
-const foldersPath = path.join(__dirname, 'commands');
-const commandFolders = fs.readdirSync(foldersPath);
+// Handlers
+const autocomplete = require('./handlers/autocomplete')
+const commands = require('./handlers/commands')
+const buttons = require('./handlers/buttons')
+const modals = require('./handlers/modals')
 
-for (const folder of commandFolders) {
-	const commandsPath = path.join(foldersPath, folder);
-	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
-	for (const file of commandFiles) {
-		const filePath = path.join(commandsPath, file);
-		const command = require(filePath);
-		if ('data' in command && 'execute' in command) {
-			client.commands.set(command.data.name, command);
-		} else {
-			console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
-		}
-	}
-}
-
-client.once(Events.ClientReady, c => {
-	console.log(`Ready! Logged in as ${c.user.tag}`);
-});
-
-const autocomplete = require('./events/autocomplete');
-const chatCommand = require('./events/chatCommand');
-const buttons = require('./events/buttons')
-const modals = require('./events/modals')
+commands.handleCommands(client);
 
 client.on(Events.InteractionCreate, async interaction => {
-	if (interaction.isChatInputCommand()) { chatCommand.handleChatInputCommand(interaction, client) }
+	if (interaction.isChatInputCommand()) { commands.handleChatInputCommand(interaction, client) }
 	else if (interaction.isAutocomplete()) { autocomplete.handleAutocomplete(interaction, client) }
 	else if (interaction.isButton()) { buttons.handleButtons(interaction, client) }
 	else if (interaction.isModalSubmit()) { modals.handleModalSubmit(interaction, client) }
@@ -56,6 +37,10 @@ client.on(Events.GuildMemberAdd, async member => {
 
 client.on(Events.GuildMemberRemove, async member => {
 	memberLeave.handleMemberLeave(member, client);
+});
+
+client.once(Events.ClientReady, c => {
+	console.log(`Ready! Logged in as ${c.user.tag}`);
 });
 
 const express = require('express');
