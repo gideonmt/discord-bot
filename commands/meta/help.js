@@ -3,7 +3,7 @@ const { SlashCommandBuilder } = require('discord.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('help')
-        .setDescription('Get list of all command and even get to know every command detials.')
+        .setDescription('Get list of all commands.')
         .addStringOption(option =>
             option.setName('command')
                 .setDescription('The command to get information on.')

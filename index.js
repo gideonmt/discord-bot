@@ -47,9 +47,17 @@ client.on(Events.InteractionCreate, async interaction => {
 	else if (interaction.isModalSubmit()) { modals.handleModalSubmit(interaction, client) }
 });
 
-client.on(Events.GuildMemberAdd, async member => {
+const memberJoin = require('./events/memberJoin');
+const memberLeave = require('./events/memberLeave');
 
+client.on(Events.GuildMemberAdd, async member => {
+	memberJoin.handleMemberJoin(member, client);
 });
+
+client.on(Events.GuildMemberRemove, async member => {
+	memberLeave.handleMemberLeave(member, client);
+});
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();

@@ -1,15 +1,32 @@
+const fs = require('fs');
+const settingsData = fs.readFileSync('settings.json', 'utf8');
+const settings = JSON.parse(settingsData);
+const welcomeEnabled = settings.welcomeEnabled;
+const channel = settings.welcomeChannel;
+const welcomeMessages = settings.welcomeMessages;
+const newMemberRoleEnabled = settings.newMemberRoleEnabled;
+const newMemberRoleId = settings.newMemberRoleId;
+
 function randomIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
 module.exports = {
-    handleNewMember: function (guildMember, client) {
-        let welcomeRole = guildMember.guild.roles.cache.get("740989114064699432");
-        guildMember.roles.add(welcomeRole);
+    handleMemberJoin: function (guildMember) {
+        if (newMemberRoleEnabled && newMemberRoleId) {
+            let welcomeRole = guildMember.guild.roles.cache.get(newMemberRoleId);
 
-        let newMemberId = guildMember.user.id
-        const channel = client.channels.cache.get('');
+            guildMember.roles.add(welcomeRole);
+        }
 
-        let rndInt = randomIntFromInterval(1, 12)
+        if (welcomeEnabled && channel && welcomeMessages) {
+            let newMemberId = guildMember.user.id;
+            let welcomeChannel = guildMember.guild.channels.cache.get(channel);
+
+            let welcomeMessage = welcomeMessages[randomIntFromInterval(0, welcomeMessages.length - 1)];
+            welcomeMessage = welcomeMessage.replace('{user}', `<@${newMemberId}>`);
+
+            welcomeChannel.send(welcomeMessage);
+        }
     }
 };

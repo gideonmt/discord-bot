@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const addWelcomeMessageButton = document.getElementById('add-welcome-message');
     const welcomeMessagesList = document.getElementById('welcome-messages-list');
     const newMemberRoleEnabled = document.getElementById('new-member-role-enabled');    
-    const newMemberRoleId = document.getElementById('new-member-role-');
+    const newMemberRoleId = document.getElementById('new-member-role');
 
     // leave
     const leaveEnabledCheckbox = document.getElementById('leave-enabled');
