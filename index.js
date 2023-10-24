@@ -2,7 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 require('dotenv').config()
-const token = process.env.TOKEN;
+
 
 const client = new Client({
 	intents: [
@@ -41,14 +41,41 @@ const buttons = require('./events/buttons')
 const modals = require('./events/modals')
 
 client.on(Events.InteractionCreate, async interaction => {
-	if (interaction.isChatInputCommand()) {chatCommand.handleChatInputCommand(interaction, client)}
-	else if (interaction.isAutocomplete()) {autocomplete.handleAutocomplete(interaction, client)}
-	else if (interaction.isButton()) {buttons.handleButtons(interaction, client)}
-	else if (interaction.isModalSubmit()) {modals.handleModalSubmit(interaction, client)}
+	if (interaction.isChatInputCommand()) { chatCommand.handleChatInputCommand(interaction, client) }
+	else if (interaction.isAutocomplete()) { autocomplete.handleAutocomplete(interaction, client) }
+	else if (interaction.isButton()) { buttons.handleButtons(interaction, client) }
+	else if (interaction.isModalSubmit()) { modals.handleModalSubmit(interaction, client) }
 });
 
 client.on(Events.GuildMemberAdd, async member => {
 
 });
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
+const port = process.env.PORT || 3000;
 
-client.login(token);
+app.enable('trust proxy');
+app.set("etag", false);
+app.use(express.static(__dirname + '/website'));
+
+app.use(express.static(__dirname + '/website'));
+app.use(bodyParser.json());
+
+app.get('/api/settings', (req, res) => {
+	const data = fs.readFileSync('settings.json');
+	const settings = JSON.parse(data);
+	res.json(settings);
+});
+
+app.post('/api/settings', (req, res) => {
+	const updatedSettings = req.body;
+	fs.writeFileSync('settings.json', JSON.stringify(updatedSettings, null, 2));
+	res.json({ message: 'Settings updated successfully' });
+});
+
+app.listen(port, () => {
+	console.log(`Server is running on port ${port}`);
+});
+
+client.login(process.env.TOKEN);

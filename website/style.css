@@ -1,0 +1,95 @@
+:root {
+    --background: #222;
+    --background-light: #333;
+    --text: #f3f3f3;
+    --highlight: #5485ff;
+    --highlight-hover: #557fe1;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background);
+    color: var(--text);
+}
+
+h1 {
+    text-align: center;
+    padding: 20px 0;
+    margin: 0;
+}
+
+#settings-form>div {
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: var(--background-light);
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.setting-section {
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+}
+
+input[type="text"],
+textarea {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.setting-info {
+    font-size: 14px;
+    color: var(--text);
+    margin-top: 5px;
+}
+
+button {
+    background-color: var(--highlight);
+    color: var(--text);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: var(--highlight-hover);
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul li {
+    background-color: var(--background-light);
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.setting-section>div {
+    margin: 14px 0;
+}
+
+.setting-section>div.title {
+    display: flex;
+    flex-direction: row;
+}
+
+.setting-section>div.title>h2 {
+    margin: 0;
+    margin-left: 8px;
+}

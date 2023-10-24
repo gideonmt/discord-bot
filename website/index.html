@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+    <h1>Bot Settings</h1>
+    <form id="settings-form">
+        <div class="setting-section">
+            <div class="title">
+                <input type="checkbox" id="welcome-enabled" name="welcomeEnabled">
+                <h2>Welcome Message</h2>
+            </div>
+
+            <div class="setting-info">
+                <p>When enabled, a welcome message will be sent when members join the server.</p>
+            </div>
+
+            <div>
+                <label for="welcome-channel">Welcome Channel:</label>
+                <input type="text" id="welcome-channel" name="welcomeChannel"
+                    placeholder="Enter the channel ID where the welcome message will be sent.">
+            </div>
+
+            <div id="welcome-messages-container">
+                <label for="welcome-messages">Welcome Messages:</label>
+                <input type="text" id="welcome-messages" name="welcomeMessages"
+                    placeholder='Enter a single welcome message and click "Add."'>
+                <button type="button" id="add-welcome-message">Add</button>
+                <ul id="welcome-messages-list">
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="setting-section">
+            <div class="title">
+                <input type="checkbox" id="new-member-role-enabled" name="newMemberRole">
+                <h2>New Member Role</h2>
+            </div>
+
+            <div class="setting-info">
+                <p>When enabled, new members will be given a role when they join.</p>
+            </div>
+
+            <div>
+                <input type="text" id="new-member-role" name="newMemberRole" placeholder="Enter the Role ID.">
+            </div>
+        </div>
+
+        <div class="setting-section">
+            <div class="title">
+                <input type="checkbox" id="leave-enabled" name="leaveEnabled">
+                <h2>Leave Message</h2>
+            </div>
+
+            <div class="setting-info">
+                <p>When enabled, a leave message will be sent when members leave the server.</p>
+            </div>
+
+            <label for="leave-channel">Leave Channel ID:</label>
+            <input type="text" id="leave-channel" name="leaveChannel"
+                placeholder="Enter the channel ID where the leave message will be sent.">
+
+            <div id="leave-messages-container">
+                <label for="leave-messages">Leave Messages:</label>
+                <input type="text" id="leave-messages" name="leaveMessages"
+                    placeholder='Enter a single leave message and click "Add."'>
+                <button type="button" id="add-leave-message">Add</button>
+                <ul id="leave-messages-list">
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="setting-section">
+            <h2>Message Functions</h2>
+            <label for="trigger-message">Set Trigger Message:</label>
+            <input type="text" id="trigger-message" name="triggerMessage">
+            <div class="setting-info">
+                <p>Set a specific message that will trigger actions when sent.</p>
+            </div>
+
+            <select id="action-dropdown">
+                <option value="">Select an action</option>
+                <option value="delete">Delete Message</option>
+                <option value="pin">Pin Message</option>
+                <option value="react">React to Message</option>
+                <option value="reply">Reply to Message</option>
+            </select>
+
+            <div id="message-functions-container">
+                <button type="button" id="add-action">Add Action</button>
+                <ul id="message-functions-list">
+                    <!-- Dynamic list of added actions will go here -->
+                </ul>
+            </div>
+        </div>
+
+        <div id="message-functions-container">
+            <button type="button" id="add-action">Add Action</button>
+            <ul id="message-functions-list">
+
+            </ul>
+        </div>
+
+        <div>
+            <h2>Starboard</h2>
+            <input type="checkbox" id="starboard-enabled" name="starboardEnabled"><br><br>
+            <label for="starboard-channel">Starboard Channel ID:</label>
+            <input type="text" id="starboard-channel" name="starboardChannel"><br><br>
+            <label for="starboard-emojis">Starboard Emojis:</label>
+            <input type="text" id="starboard-emojis" name="starboardEmojis"><br><br>
+            <label for="starboard-reactions">Reactions Needed for Starboard:</label>
+            <input type="number" id="starboard-reactions" name="starboardReactions"><br><br>
+        </div>
+
+        <div>
+            <h2>Modmail</h2>
+            <input type="checkbox" id="modmail-enabled" name="modmailEnabled"><br><br>
+            <label for="auto-response">Auto Response Message:</label>
+            <textarea id="auto-response" name="autoResponse"></textarea><br><br>
+            <label for="auto-reaction">Auto Reaction:</label>
+            <input type="text" id="auto-reaction" name="autoReaction"><br><br>
+        </div>
+
+        <div>
+            <button type="submit">Save Settings</button>
+        </div>
+
+    </form>
+    <script src="script.js"></script>
+</body>
+
+</html>
