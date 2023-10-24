@@ -82,6 +82,9 @@ Invite the bot to your server by using the following link, replacing `<YOUR_CLIE
 
 Once the bot is in your server, you can start using its features and commands.
 
+## Configuring the bot 
+WIP
+
 ## Contributing
 
 This Discord bot is a work in progress. Pull requests and issues are very appreciated. 
