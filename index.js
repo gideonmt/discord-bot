@@ -35,37 +35,14 @@ client.once(Events.ClientReady, c => {
 	console.log(`Ready! Logged in as ${c.user.tag}`);
 });
 
+const autocomplete = require('./events/autocomplete');
+const chatCommand = require('./events/chatCommand');
+const buttons = require('./events/buttons')
+
 client.on(Events.InteractionCreate, async interaction => {
-	if (interaction.isChatInputCommand()) {
-
-		const command = client.commands.get(interaction.commandName);
-
-		if (!command) return;
-
-		try {
-			await command.execute(interaction, client);
-		} catch (error) {
-			console.error(error);
-			if (interaction.replied || interaction.deferred) {
-				await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
-			} else {
-				await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
-			}
-		}
-	} else if (interaction.isAutocomplete()) {
-		const command = interaction.client.commands.get(interaction.commandName);
-
-		if (!command) {
-			console.error(`No command matching ${interaction.commandName} was found.`);
-			return;
-		}
-
-		try {
-			await command.autocomplete(interaction);
-		} catch (error) {
-			console.error(error);
-		}
-	}
+	if (interaction.isChatInputCommand()) {chatCommand.handleChatInputCommand(interaction, client)}
+	else if (interaction.isAutocomplete()) {autocomplete.handleAutocomplete(interaction, client)}
+	else if (interaction.isButton()) {buttons.handleButtons(interaction, client)}
 });
 
 client.on(Events.GuildMemberAdd, async member => {
