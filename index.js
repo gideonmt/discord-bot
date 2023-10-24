@@ -38,11 +38,13 @@ client.once(Events.ClientReady, c => {
 const autocomplete = require('./events/autocomplete');
 const chatCommand = require('./events/chatCommand');
 const buttons = require('./events/buttons')
+const modals = require('./events/modals')
 
 client.on(Events.InteractionCreate, async interaction => {
 	if (interaction.isChatInputCommand()) {chatCommand.handleChatInputCommand(interaction, client)}
 	else if (interaction.isAutocomplete()) {autocomplete.handleAutocomplete(interaction, client)}
 	else if (interaction.isButton()) {buttons.handleButtons(interaction, client)}
+	else if (interaction.isModalSubmit()) {modals.handleModalSubmit(interaction, client)}
 });
 
 client.on(Events.GuildMemberAdd, async member => {
