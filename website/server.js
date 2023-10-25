@@ -6,9 +6,8 @@ module.exports = () => {
 
     app.enable('trust proxy');
     app.set("etag", false);
-    app.use(express.static(__dirname + '/website'));
+    app.use(express.static(__dirname));
 
-    app.use(express.static(__dirname + '/website'));
     app.use(bodyParser.json());
 
     app.get('/api/settings', (req, res) => {
