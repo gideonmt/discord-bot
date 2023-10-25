@@ -37,8 +37,7 @@ label {
     font-weight: bold;
 }
 
-input[type="text"],
-textarea {
+input[type="text"] {
     width: calc(100% - 20px);
     padding: 10px;
     margin-top: 5px;
@@ -60,6 +59,10 @@ button {
     border-radius: 5px;
     cursor: pointer;
     margin-top: 10px;
+}
+
+button[type="submit"], button#add-message-function{
+    margin-top: 0;
 }
 
 button:hover {
@@ -84,12 +87,18 @@ ul li {
     margin: 14px 0;
 }
 
-.setting-section>div.title {
+.setting-section>div>div.title {
     display: flex;
     flex-direction: row;
 }
 
-.setting-section>div.title>h2 {
+.setting-section>div>div.title>h2 {
     margin: 0;
     margin-left: 8px;
+}
+
+hr {
+    border: none;
+    border-bottom: 1px solid var(--text);
+    margin: 20px 0;
 }
