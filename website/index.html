@@ -97,11 +97,7 @@
             <div>
                 <lable for="action-dropdown">Set actions:</label>
                     <select id="action-dropdown">
-                        <option value="">Select an action</option>
-                        <option value="delete">Delete Message</option>
-                        <option value="pin">Pin Message</option>
-                        <option value="react">React to Message</option>
-                        <option value="reply">Reply to Message</option>
+
                     </select>
             </div>
 
@@ -112,7 +108,12 @@
 
             <div id="react-emoji-div">
                 <label for="react-text-input">Set Reaction Emoji:</label>
-                <input type="text" id="react-text-input" name="reactEmoji">
+                <input type="text" id="react-text-input" name="reactEmoji" placeholder="">
+            </div>
+
+            <div id="reply-message-advanced-div">
+                <label for="reply-advanced-text-input">Set advanced reply message:</label>
+                <input type="text" id="reply-advanced-text-input" name="replyMessageAdvanced" placeholder="Use JSON style message.">
             </div>
 
             <div id="message-functions-container">

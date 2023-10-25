@@ -63,6 +63,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // Trigger message settings
     document.getElementById('reply-message-div').style.display = 'none';
     document.getElementById('react-emoji-div').style.display = 'none';
+    document.getElementById('reply-message-advanced-div').style.display = 'none';
+
+    const options = {
+        "reply": "Reply to Message",
+        "react": "React to Message",
+        "pin": "Pin Message",
+        "delete": "Delete Message",
+        "reply-advanced": "Reply advanced (JSON Message)"
+    }
+
+    actionDropdown.innerHTML = `<option value="">Select an action</option>`;
+    for (const [key, value] of Object.entries(options)) {
+        actionDropdown.innerHTML += `<option value="${key}">${value}</option>`;
+    }
 
     actionDropdown.addEventListener('change', () => {
         const selectedAction = actionDropdown.value;
@@ -74,6 +88,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 replyTextInput.value = '';
                 listItem.textContent += `: ${replyTextInput.value}`;
                 replyTextInput.value = '';
+            } else if (selectedAction === 'reply-advanced') {
+                document.getElementById('reply-message-advanced-div').style.display = 'block';
+                replyAdvancedTextInput.value = '';
+                listItem.textContent += `: ${replyAdvancedTextInput.value}`;
+                replyAdvancedTextInput.value = '';
             } else if (selectedAction === 'react') {
                 document.getElementById('react-emoji-div').style.display = 'block';
                 reactTextInput.value = '';
@@ -84,6 +103,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             messageActionsList.appendChild(listItem);
             actionDropdown.selectedIndex = 0;
+            //remove from dropdown
+            const option = actionDropdown.querySelector(`option[value="${selectedAction}"]`);
+            option.parentNode.removeChild(option);
         }
     });
 
@@ -93,6 +115,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const replyMessageListItem = messageActionsList.querySelector('li:first-child');
         if (replyMessageListItem) {
             replyMessageListItem.textContent = `reply: ${replyTextInput.value}`;
+        }
+    });
+
+    // reply advanced text input
+    const replyAdvancedTextInput = document.getElementById('reply-advanced-text-input');
+    replyAdvancedTextInput.addEventListener('input', () => {
+        const replyMessageListItem = messageActionsList.querySelector('li:first-child');
+        if (replyMessageListItem) {
+            replyMessageListItem.textContent = `reply-advanced: ${replyAdvancedTextInput.value}`;
         }
     });
 
@@ -135,26 +166,17 @@ document.addEventListener('DOMContentLoaded', () => {
     settingsForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        // Get the updated settings, including the lists of welcome and leave messages
         const welcomeMessages = Array.from(welcomeMessagesList.children).map(li => li.textContent);
         const leaveMessages = Array.from(leaveMessagesList.children).map(li => li.textContent);
-        //struction messageFunctions like this:
-        // messageFunctions: [
-        //   {
-        //     trigger: 'hello',
-        //     actions: [reply: 'hi', react: '😄']
-        //   },
-        //   {
-        //     trigger: 'pin me',
-        //     actions: [reply: 'Ok!', react: '📌', pin: true]
-        //   }
-        // ]
 
         const messageFunctions = Array.from(messageFunctionsList.children).map(li => {
             const trigger = li.querySelector('ul > li:first-child').textContent.replace('Trigger: ', '');
             const actions = Array.from(li.querySelectorAll('ul > li:last-child > ul > li')).map(action => {
                 const actionText = action.textContent;
                 const actionType = actionText.split(':')[0];
+                if (actionType === 'Trigger' || actionType === 'Actions') {
+                    return;
+                }
                 const actionValue = actionText.split(':')[1].trim();
                 const actionObject = {};
                 actionObject[actionType] = actionValue;
@@ -173,7 +195,6 @@ document.addEventListener('DOMContentLoaded', () => {
             leaveEnabled: leaveEnabled.checked,
             leaveChannel: leaveChannelInput.value,
             leaveMessages: leaveMessages,
-            triggerMessage: triggerMessageInput.value,
             messageFunctions: messageFunctions,
             starboardChannel: starboardChannelInput.value,
             starboardEmojis: starboardEmojisInput.value,
