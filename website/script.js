@@ -2,35 +2,37 @@ document.addEventListener('DOMContentLoaded', () => {
     const settingsForm = document.getElementById('settings-form');
 
     // join
-    const welcomeEnabledCheckbox = document.getElementById('welcome-enabled');
+    const welcomeEnabled = document.getElementById('welcome-enabled');
     const welcomeChannelInput = document.getElementById('welcome-channel');
     const welcomeMessagesTextarea = document.getElementById('welcome-messages');
     const addWelcomeMessageButton = document.getElementById('add-welcome-message');
     const welcomeMessagesList = document.getElementById('welcome-messages-list');
-    const newMemberRoleEnabled = document.getElementById('new-member-role-enabled');    
+    const newMemberRoleEnabled = document.getElementById('new-member-role-enabled');
     const newMemberRoleId = document.getElementById('new-member-role');
 
     // leave
-    const leaveEnabledCheckbox = document.getElementById('leave-enabled');
+    const leaveEnabled = document.getElementById('leave-enabled');
     const leaveChannelInput = document.getElementById('leave-channel');
     const leaveMessagesTextarea = document.getElementById('leave-messages');
     const addLeaveMessageButton = document.getElementById('add-leave-message');
     const leaveMessagesList = document.getElementById('leave-messages-list');
 
     // trigger
+    const messageFunctionsEnabled = document.getElementById('message-functions-enabled');
     const triggerMessageInput = document.getElementById('trigger-message');
     const actionDropdown = document.getElementById('action-dropdown');
-    const addActionButton = document.getElementById('add-action');
+    const messageActionsList = document.getElementById('message-actions-list');
+    const addActionButton = document.getElementById('add-message-function');
     const messageFunctionsList = document.getElementById('message-functions-list');
 
     // starboard
-    const starboardEnabledCheckbox = document.getElementById('starboard-enabled');
+    const starboardEnabled = document.getElementById('starboard-enabled');
     const starboardChannelInput = document.getElementById('starboard-channel');
     const starboardEmojisInput = document.getElementById('starboard-emojis');
     const starboardReactionsInput = document.getElementById('starboard-reactions');
 
     // modmail
-    const modmailEnabledCheckbox = document.getElementById('modmail-enabled');
+    const modmailEnabled = document.getElementById('modmail-enabled');
     const autoResponseTextarea = document.getElementById('auto-response');
     const autoReactionInput = document.getElementById('auto-reaction');
 
@@ -42,7 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
             listItem.textContent = newMessage;
             welcomeMessagesList.appendChild(listItem);
             welcomeMessagesTextarea.value = '';
-        }
+        } else
+            alert('Please enter a message.');
     });
 
     // Leave message settings
@@ -53,32 +56,80 @@ document.addEventListener('DOMContentLoaded', () => {
             listItem.textContent = newMessage;
             leaveMessagesList.appendChild(listItem);
             leaveMessagesTextarea.value = '';
-        }
+        } else
+            alert('Please enter a message.');
     });
 
     // Trigger message settings
-    actionDropdown.addEventListener('change', () => {
-        const selectedAction = actionDropdown.value;
-        if (selectedAction === 'reply') {
-            document.getElementById('reply-text-input').style.display = 'block';
-        } else {
-            document.getElementById('reply-text-input').style.display = 'none';
-        }
-    });
+    document.getElementById('reply-message-div').style.display = 'none';
+    document.getElementById('react-emoji-div').style.display = 'none';
 
-    addActionButton.addEventListener('click', () => {
+    actionDropdown.addEventListener('change', () => {
         const selectedAction = actionDropdown.value;
         if (selectedAction) {
             const listItem = document.createElement('li');
             listItem.textContent = selectedAction;
             if (selectedAction === 'reply') {
-                const replyTextInput = document.getElementById('reply-text');
+                document.getElementById('reply-message-div').style.display = 'block';
+                replyTextInput.value = '';
                 listItem.textContent += `: ${replyTextInput.value}`;
                 replyTextInput.value = '';
+            } else if (selectedAction === 'react') {
+                document.getElementById('react-emoji-div').style.display = 'block';
+                reactTextInput.value = '';
+                listItem.textContent += `: ${reactTextInput.value}`;
+                reactTextInput.value = '';
+            } else {
+                listItem.textContent += ': true';
             }
-            messageFunctionsList.appendChild(listItem);
+            messageActionsList.appendChild(listItem);
             actionDropdown.selectedIndex = 0;
         }
+    });
+
+    // reply text input
+    const replyTextInput = document.getElementById('reply-text-input');
+    replyTextInput.addEventListener('input', () => {
+        const replyMessageListItem = messageActionsList.querySelector('li:first-child');
+        if (replyMessageListItem) {
+            replyMessageListItem.textContent = `reply: ${replyTextInput.value}`;
+        }
+    });
+
+    // react text input
+    const reactTextInput = document.getElementById('react-text-input');
+    reactTextInput.addEventListener('input', () => {
+        const reactMessageListItem = messageActionsList.querySelector('li:first-child');
+        if (reactMessageListItem) {
+            reactMessageListItem.textContent = `react: ${reactTextInput.value}`;
+        }
+    });
+
+    addActionButton.addEventListener('click', () => {
+        if (triggerMessageInput.value && messageActionsList.children.length > 0) {
+            const listItem = document.createElement('li');
+            const messageList = document.createElement('ul');
+            const triggerMessageListItem = document.createElement('li');
+            const actionsListItem = document.createElement('li');
+            const actionsList = document.createElement('ul');
+            listItem.appendChild(messageList);
+            messageList.appendChild(triggerMessageListItem);
+            triggerMessageListItem.textContent = `Trigger: ${triggerMessageInput.value}`;
+            messageList.appendChild(actionsListItem);
+            actionsListItem.textContent = 'Actions: ';
+            actionsListItem.appendChild(actionsList);
+            Array.from(messageActionsList.children).forEach(action => {
+                const actionListItem = document.createElement('li');
+                actionListItem.textContent = action.textContent;
+                actionsList.appendChild(actionListItem);
+            });
+            messageFunctionsList.appendChild(listItem);
+            triggerMessageInput.value = '';
+            messageActionsList.innerHTML = '';
+            document.getElementById('reply-message-div').style.display = 'none';
+            document.getElementById('react-emoji-div').style.display = 'none';
+        } else
+            alert('Please enter a trigger message and at least one action.');
     });
 
     settingsForm.addEventListener('submit', (e) => {
@@ -87,24 +138,49 @@ document.addEventListener('DOMContentLoaded', () => {
         // Get the updated settings, including the lists of welcome and leave messages
         const welcomeMessages = Array.from(welcomeMessagesList.children).map(li => li.textContent);
         const leaveMessages = Array.from(leaveMessagesList.children).map(li => li.textContent);
-        // const actions = Array.from(messageFunctionsList.children).map(li => li.textContent);
+        //struction messageFunctions like this:
+        // messageFunctions: [
+        //   {
+        //     trigger: 'hello',
+        //     actions: [reply: 'hi', react: '😄']
+        //   },
+        //   {
+        //     trigger: 'pin me',
+        //     actions: [reply: 'Ok!', react: '📌', pin: true]
+        //   }
+        // ]
+
+        const messageFunctions = Array.from(messageFunctionsList.children).map(li => {
+            const trigger = li.querySelector('ul > li:first-child').textContent.replace('Trigger: ', '');
+            const actions = Array.from(li.querySelectorAll('ul > li:last-child > ul > li')).map(action => {
+                const actionText = action.textContent;
+                const actionType = actionText.split(':')[0];
+                const actionValue = actionText.split(':')[1].trim();
+                const actionObject = {};
+                actionObject[actionType] = actionValue;
+                return actionObject;
+            });
+            console.log({ trigger, actions });
+            return { trigger, actions };
+        });
+
         const updatedSettings = {
-            welcomeEnabled: welcomeEnabledCheckbox.checked,
+            welcomeEnabled: welcomeEnabled.checked,
             welcomeChannel: welcomeChannelInput.value,
             welcomeMessages: welcomeMessages,
             newMemberRoleEnabled: newMemberRoleEnabled.checked,
             newMemberRoleId: newMemberRoleId.value,
-            leaveEnabled: leaveEnabledCheckbox.checked,
+            leaveEnabled: leaveEnabled.checked,
             leaveChannel: leaveChannelInput.value,
             leaveMessages: leaveMessages,
-            // triggerMessage: triggerMessageInput.value,
-            // actions: actions,
-            // starboardChannel: starboardChannelInput.value,
-            // starboardEmojis: starboardEmojisInput.value,
-            // starboardReactions: parseInt(starboardReactionsInput.value),
-            // modmailEnabled: modmailEnabledCheckbox.checked,
-            // autoResponse: autoResponseTextarea.value,
-            // autoReaction: autoReactionInput.value,
+            triggerMessage: triggerMessageInput.value,
+            messageFunctions: messageFunctions,
+            starboardChannel: starboardChannelInput.value,
+            starboardEmojis: starboardEmojisInput.value,
+            starboardReactions: parseInt(starboardReactionsInput.value),
+            modmailEnabled: modmailEnabled.checked,
+            autoResponse: autoResponseTextarea.value,
+            autoReaction: autoReactionInput.value,
         };
 
         console.log(updatedSettings);
