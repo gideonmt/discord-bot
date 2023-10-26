@@ -63,14 +63,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Trigger message settings
     document.getElementById('reply-message-div').style.display = 'none';
     document.getElementById('react-emoji-div').style.display = 'none';
-    document.getElementById('reply-message-advanced-div').style.display = 'none';
 
     const options = {
         "reply": "Reply to Message",
         "react": "React to Message",
         "pin": "Pin Message",
         "delete": "Delete Message",
-        "reply-advanced": "Reply advanced (JSON Message)"
     }
 
     actionDropdown.innerHTML = `<option value="">Select an action</option>`;
@@ -88,11 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 replyTextInput.value = '';
                 listItem.textContent += `: ${replyTextInput.value}`;
                 replyTextInput.value = '';
-            } else if (selectedAction === 'reply-advanced') {
-                document.getElementById('reply-message-advanced-div').style.display = 'block';
-                replyAdvancedTextInput.value = '';
-                listItem.textContent += `: ${replyAdvancedTextInput.value}`;
-                replyAdvancedTextInput.value = '';
             } else if (selectedAction === 'react') {
                 document.getElementById('react-emoji-div').style.display = 'block';
                 reactTextInput.value = '';
@@ -115,15 +108,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const replyMessageListItem = messageActionsList.querySelector('li:first-child');
         if (replyMessageListItem) {
             replyMessageListItem.textContent = `reply: ${replyTextInput.value}`;
-        }
-    });
-
-    // reply advanced text input
-    const replyAdvancedTextInput = document.getElementById('reply-advanced-text-input');
-    replyAdvancedTextInput.addEventListener('input', () => {
-        const replyMessageListItem = messageActionsList.querySelector('li:first-child');
-        if (replyMessageListItem) {
-            replyMessageListItem.textContent = `reply-advanced: ${replyAdvancedTextInput.value}`;
         }
     });
 
@@ -195,7 +179,9 @@ document.addEventListener('DOMContentLoaded', () => {
             leaveEnabled: leaveEnabled.checked,
             leaveChannel: leaveChannelInput.value,
             leaveMessages: leaveMessages,
+            messageFunctionsEnabled: messageFunctionsEnabled.checked,
             messageFunctions: messageFunctions,
+            starboardEnabled: starboardEnabled.checked,
             starboardChannel: starboardChannelInput.value,
             starboardEmojis: starboardEmojisInput.value,
             starboardReactions: parseInt(starboardReactionsInput.value),

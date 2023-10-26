@@ -1,1 +1,51 @@
-{}
+{
+  "welcomeEnabled": true,
+  "welcomeChannel": "1077305204363493416",
+  "welcomeMessages": [
+    "{user} is here!",
+    "Welcome {user}!",
+    "{user} joined. We are happy to have you!",
+    "Welcome {user}. We're excited to have you."
+  ],
+  "newMemberRoleEnabled": true,
+  "newMemberRoleId": "1166835332633870516",
+  "leaveEnabled": true,
+  "leaveChannel": "1077305204363493416",
+  "leaveMessages": [
+    "{user} left.",
+    "Bye {user}."
+  ],
+  "messageFunctionsEnabled": true,
+  "messageFunctions": [
+    {
+      "trigger": "hello",
+      "actions": [
+        {
+          "reply": "hi"
+        }
+      ]
+    },
+    {
+      "trigger": "cookie",
+      "actions": [
+        {
+          "react": "🍪"
+        }
+      ]
+    },
+    {
+      "trigger": "{client.mention}",
+      "actions": [
+        {
+          "reply": "Hi, I am an open source, general purpose Discord bot. Use `/help` to get a list of commands or `/botinfo` to learn more about me."
+        }
+      ]
+    }
+  ],
+  "starboardChannel": "1077305204363493416",
+  "starboardEmojis": "⭐️, 🔥, ❤️",
+  "starboardReactions": 5,
+  "modmailEnabled": true,
+  "autoResponse": "Thank you for contacting the moderators. We will respond ASAP.",
+  "autoReaction": "✅"
+}
