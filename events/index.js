@@ -4,6 +4,7 @@ module.exports = (client) => {
     const memberJoin = require('./memberJoin');
     const memberLeave = require('./memberLeave');
     const messageCreate = require('./messageCreate');
+    const messageReact = require('./messageReact');
 
     client.on(Events.GuildMemberAdd, async member => {
         memberJoin.handleMemberJoin(member, client);
@@ -15,5 +16,9 @@ module.exports = (client) => {
 
     client.on(Events.MessageCreate, async message => {
         messageCreate.handleMessageCreate(message, client);
+    });
+
+    client.on(Events.MessageReactionAdd, async (reaction) => {
+        messageReact.handleStarboard(reaction, client);
     });
 }
