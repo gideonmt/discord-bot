@@ -1,63 +1,77 @@
 const settings = require('../settings.json');
-const starboardEnabled = settings.starboardEnabled;
-const starboardChannelId = settings.starboardChannel;
-const starboardEmojisInput = settings.starboardEmojis;
-const starboardReactions = settings.starboardReactions;
+// const starboardEnabled = settings.starboardEnabled;
+// const starboardChannelId = settings.starboardChannel;
+// const starboardEmojisInput = settings.starboardEmojis;
+// const starboardReactions = settings.starboardReactions;
+const { starboardEnabled, starboardChannel: starboardChannelId, starboardEmojis: starboardEmojisInput, starboardReactions } = settings
 
 module.exports = {
     handleStarboard: async (reaction, client) => {
-        if (!starboardEnabled || !starboardChannel || !starboardEmojis || !starboardReactions) return;
+        if (!starboardEnabled || !starboardChannelId || !starboardEmojisInput || !starboardReactions) return;
 
-        const message = reaction.message;
-        const channel = message.channel;
-
-        if (channel.id === starboardChannel) return;
-
+        const message = await reaction.message.fetch();
+        const reactionFetch = await reaction.fetch()
         const starboardChannel = client.channels.cache.get(starboardChannelId);
 
-        if (!starboardChannel) return;
+        const starboardEmojis = starboardEmojisInput.split(', ').map(emoji => emoji.normalize("NFC"));
+        const reactionEmoji = String(reaction.emoji).normalize("NFC");
 
-        const starboardEmojis = starboardEmojisInput.split(',');
+        if (!starboardChannel || message.author.bot || !starboardEmojis.some(emoji => emoji === reactionEmoji || emoji === `${reaction.emoji}\uFE0F` || emoji === `${reaction.emoji}\uFE0E`)) return;
 
-        if (!starboardEmojis.includes(reaction.emoji.name)) return;
-
-        // check the amount of reactions with starboard emojis
-        let starboardEmojiCount = 0;
-        starboardReactions.forEach(async (starboardReaction) => {
-            if (starboardReaction.emoji === reaction.emoji.name) {
-                starboardEmojiCount = starboardReaction.count;
+        if (reactionFetch.count === starboardReactions) {
+            const embed = {
+                color: 0xffac33,
+                description: `${message.content}\n\n[Jump to message](${message.url})`,
+                footer: {
+                    text: `⭐️ ${reactionFetch.count} | ${message.id}`
+                },
+                author: {
+                    name: message.author.globalName,
+                    icon_url: message.author.displayAvatarURL()
+                },
             }
-        });
 
-        // if the amount of reactions is less than the required amount, return
-        if (reaction.count < starboardEmojiCount) return;
-
-        // if the message is already in the starboard channel, return
-        const starboardMessages = await starboardChannel.messages.fetch({ limit: 100 });
-
-        if (starboardMessages.find(starboardMessage => starboardMessage.embeds[0].footer.text.startsWith(message.id))) return;
-        
-        // create the embed
-        const embed = {
-            color: 0xffac33,
-            description: `${message.text}\n\n[Jump to message](${message.url})`,
-            footer: {
-                text: `⭐️ ${reaction.count} | ${message.id}`
-            },
-            author: {
-                name: message.author.tag,
-                icon_url: message.author.displayAvatarURL()
-            },
-        }
-
-        // if the message has an image, add it to the embed
-        if (message.attachments.size > 0) {
-            embed.image = {
-                url: message.attachments.first().url
+            if (message.attachments.size > 0) {
+                embed.image = {
+                    url: message.attachments.first().url
+                }
             }
-        }
 
-        // send the embed to the starboard channel
-        await starboardChannel.send({ embeds: [embed] });
+            await starboardChannel.send({ embeds: [embed] });
+        } else if (reactionFetch.count > starboardReactions) {
+            const messages = await starboardChannel.messages.fetch({ limit: 100 });
+
+            const correctMessage = messages.find((msg) => {
+                return msg.embeds.some((embed) => {
+                    return embed.footer && embed.footer.text.includes(message.id);
+                });
+            });
+
+            const embed = {
+                color: 0xffac33,
+                description: `${message.content}\n\n[Jump to message](${message.url})`,
+                footer: {
+                    text: `⭐️ ${reactionFetch.count} | ${message.id}`
+                },
+                author: {
+                    name: message.author.globalName,
+                    icon_url: message.author.displayAvatarURL()
+                },
+            }
+
+            if (message.attachments.size > 0) {
+                embed.image = {
+                    url: message.attachments.first().url
+                }
+            }
+
+            if (correctMessage) {
+                await correctMessage.edit({
+                    embeds: [embed],
+                });
+            }
+        } else {
+            return;
+        }
     }
 }

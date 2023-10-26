@@ -42,6 +42,7 @@
             ]
         }
     ],
+    "starboardEnabled": true,
     "starboardChannel": "1077305204363493416",
     "starboardEmojis": "⭐️, 🔥, ❤️",
     "starboardReactions": 1,
