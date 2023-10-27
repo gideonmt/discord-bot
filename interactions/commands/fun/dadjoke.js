@@ -6,7 +6,6 @@ module.exports = {
 		.setName('dadjoke')
 		.setDescription('Sends a random dad joke.'),
 	async execute(interaction) {
-        // "Accept: application/json" https://icanhazdadjoke.com/
         const joke = await fetch(`https://icanhazdadjoke.com/`, {
             headers: {
                 "Accept": "application/json"

@@ -18,7 +18,14 @@ module.exports = {
 
         if (!starboardChannel || message.author.bot || !starboardEmojis.some(emoji => emoji === reactionEmoji || emoji === `${reaction.emoji}\uFE0F` || emoji === `${reaction.emoji}\uFE0E`)) return;
 
-        if (reactionFetch.count === starboardReactions) {
+        const messages = await starboardChannel.messages.fetch({ limit: 100 });
+        const correctMessage = messages.find((msg) => {
+            return msg.embeds.some((embed) => {
+                return embed.footer && embed.footer.text.includes(message.id);
+            });
+        });
+        
+        if (reactionFetch.count === starboardReactions && !correctMessage) {
             const embed = {
                 color: 0xffac33,
                 description: `${message.content}\n\n[Jump to message](${message.url})`,
@@ -38,15 +45,7 @@ module.exports = {
             }
 
             await starboardChannel.send({ embeds: [embed] });
-        } else if (reactionFetch.count > starboardReactions) {
-            const messages = await starboardChannel.messages.fetch({ limit: 100 });
-
-            const correctMessage = messages.find((msg) => {
-                return msg.embeds.some((embed) => {
-                    return embed.footer && embed.footer.text.includes(message.id);
-                });
-            });
-
+        } else if (reactionFetch.count > starboardReactions && correctMessage) {
             const embed = {
                 color: 0xffac33,
                 description: `${message.content}\n\n[Jump to message](${message.url})`,
@@ -65,11 +64,9 @@ module.exports = {
                 }
             }
 
-            if (correctMessage) {
-                await correctMessage.edit({
-                    embeds: [embed],
-                });
-            }
+            await correctMessage.edit({
+                embeds: [embed],
+            });
         } else {
             return;
         }

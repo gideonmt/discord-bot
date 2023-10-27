@@ -1,4 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
+const fs = require('fs');
+const path = require('path');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -10,8 +12,6 @@ module.exports = {
                 .setAutocomplete(true)),
     async autocomplete(interaction) {
         const focusedValue = interaction.options.getFocused();
-        const fs = require('fs');
-        const path = require('path');
 
         function listAndRemoveJsFiles(directoryPath) {
             const files = fs.readdirSync(directoryPath);
