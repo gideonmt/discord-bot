@@ -36,6 +36,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const autoResponseTextarea = document.getElementById('auto-response');
     const autoReactionInput = document.getElementById('auto-reaction');
 
+    // activity status
+    const activityStatusEnabled = document.getElementById('activity-status-enabled');
+    const activityStatusType = document.getElementById('activity-status-type');
+    const activityStatus = document.getElementById('activity-status-text');
+    const addActivityStatusButton = document.getElementById('add-activity-status');
+    const activityStatusList = document.getElementById('activity-status-list');
+
     // Welcome message settings
     addWelcomeMessageButton.addEventListener('click', () => {
         const newMessage = welcomeMessagesTextarea.value.trim();
@@ -147,11 +154,26 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Please enter a trigger message and at least one action.');
     });
 
+
+    // activity status
+    addActivityStatusButton.addEventListener('click', () => {
+        const newActivityStatus = `${activityStatusType.value}: ${activityStatus.textContent}`;
+        if (newActivityStatus) {
+            const listItem = document.createElement('li');
+            listItem.textContent = newActivityStatus;
+            activityStatusType.selectedIndex = 0;
+            activityStatus.textContent = '';
+            activityStatus.textContent = newActivityStatus;
+        } else
+            alert('Please enter a message.');
+    });
+
     settingsForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
         const welcomeMessages = Array.from(welcomeMessagesList.children).map(li => li.textContent);
         const leaveMessages = Array.from(leaveMessagesList.children).map(li => li.textContent);
+        const activityStatus = Array.from(activityStatusList.children).map(li => li.textContent);
 
         const messageFunctions = Array.from(messageFunctionsList.children).map(li => {
             const trigger = li.querySelector('ul > li:first-child').textContent.replace('Trigger: ', '');
@@ -188,6 +210,8 @@ document.addEventListener('DOMContentLoaded', () => {
             modmailEnabled: modmailEnabled.checked,
             autoResponse: autoResponseTextarea.value,
             autoReaction: autoReactionInput.value,
+            activityStatusEnabled: activityStatusEnabled.checked,
+            activityStatus: activityStatus,
         };
 
         console.log(updatedSettings);

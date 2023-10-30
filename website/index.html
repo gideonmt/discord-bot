@@ -172,9 +172,39 @@
             </div>
         </div>
 
-        <div>
-            <button type="submit">Save Settings</button>
-        </div>
+        <div class="setting-section">
+            <div>
+                <div class="title">
+                    <input type="checkbox" id="activity-status" name="activityStatus">
+                    <h2>Bot Activity Status</h2>
+                </div>
+                <p>When enabled, the bot will display or cycle through the specified status.</p>
+            </div>
+
+            <hr>
+
+            <div>
+                <label for="activity-status">Activity Status:</label>
+                <div class="row">
+                    <select>
+                        <option value="" disabled selected>Select an activity type</option>
+                        <option value="PLAYING">Playing</option>
+                        <option value="STREAMING">Streaming</option>
+                        <option value="LISTENING">Listening</option>
+                        <option value="WATCHING">Watching</option>
+                    </select>
+                    <input type="text" id="activity-status" name="activityStatus"
+                        placeholder='Enter a single activity status and then click "Add".'>
+                </div>
+                <button type="button" id="add-activity-status">Add</button>
+                <ul id="activity-status-list">
+
+                </ul>
+            </div>
+
+            <div>
+                <button type="submit">Save Settings</button>
+            </div>
 
     </form>
     <script src="script.js"></script>
