@@ -175,7 +175,7 @@
         <div class="setting-section">
             <div>
                 <div class="title">
-                    <input type="checkbox" id="activity-status" name="activityStatus">
+                    <input type="checkbox" id="activity-status-enabled" name="activityStatus">
                     <h2>Bot Activity Status</h2>
                 </div>
                 <p>When enabled, the bot will display or cycle through the specified status.</p>
@@ -186,7 +186,7 @@
             <div>
                 <label for="activity-status">Activity Status:</label>
                 <div class="row">
-                    <select>
+                    <select id="activity-status-type">
                         <option value="" disabled selected>Select an activity type</option>
                         <option value="PLAYING">Playing</option>
                         <option value="STREAMING">Streaming</option>

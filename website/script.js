@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // activity status
     const activityStatusEnabled = document.getElementById('activity-status-enabled');
     const activityStatusType = document.getElementById('activity-status-type');
-    const activityStatus = document.getElementById('activity-status-text');
+    const activityStatusText = document.getElementById('activity-status');
     const addActivityStatusButton = document.getElementById('add-activity-status');
     const activityStatusList = document.getElementById('activity-status-list');
 
@@ -157,13 +157,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // activity status
     addActivityStatusButton.addEventListener('click', () => {
-        const newActivityStatus = `${activityStatusType.value}: ${activityStatus.textContent}`;
+        const newActivityStatus = `${activityStatusType.value}: ${activityStatusText.value}`;
         if (newActivityStatus) {
             const listItem = document.createElement('li');
             listItem.textContent = newActivityStatus;
-            activityStatusType.selectedIndex = 0;
-            activityStatus.textContent = '';
-            activityStatus.textContent = newActivityStatus;
+            activityStatusList.appendChild(listItem);
+            activityStatusText.value = '';
         } else
             alert('Please enter a message.');
     });
@@ -174,6 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const welcomeMessages = Array.from(welcomeMessagesList.children).map(li => li.textContent);
         const leaveMessages = Array.from(leaveMessagesList.children).map(li => li.textContent);
         const activityStatus = Array.from(activityStatusList.children).map(li => li.textContent);
+        console.log(activityStatus)
 
         const messageFunctions = Array.from(messageFunctionsList.children).map(li => {
             const trigger = li.querySelector('ul > li:first-child').textContent.replace('Trigger: ', '');
