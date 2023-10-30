@@ -1,6 +1,5 @@
-const modmail = require("./modmail");
-
-module.exports = async (guild) => {
+const notifyMods = require('./notifyMods');
+module.exports = async (guild, message) => {
     const modmailChannel = guild.channels.cache.find(channel => { channel.name === 'modmail' && channel.type === 15 });
     console.log(modmailChannel);
     if (!modmailChannel) {
@@ -9,9 +8,9 @@ module.exports = async (guild) => {
             type: 15,
             reason: 'Modmail channel creation.'
         }).then(modmailChannel => {
-            modmail.notifyMods(modmailChannel);
+            notifyMods(modmailChannel);
         });
         return;
     }
-    return modmail.notifyMods(modmailChannel);
+    return notifyMods(modmailChannel, message);
 };
