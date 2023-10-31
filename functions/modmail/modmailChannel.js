@@ -1,11 +1,6 @@
 const notifyMods = require('./notifyMods');
-module.exports = async (guild, interaction) => {
-    const buttonMessage = interaction.message;
-    const message = await buttonMessage.fetchReference();
-
-    const allChannels = guild.channels.cache;
-
-    const modmailChannels = allChannels.filter(channel => channel.name === 'modmail' && channel.type === 15);
+module.exports = async (guild, message) => {
+    const modmailChannels = guild.channels.cache.filter(channel => channel.name === 'modmail' && channel.type === 15);
     const modmailChannel = modmailChannels.first();
     if (!modmailChannel) {
         guild.channels.create({

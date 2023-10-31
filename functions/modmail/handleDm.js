@@ -1,7 +1,7 @@
 const { ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
+const modmailChannel = require('./modmailChannel');
 
 module.exports = async (message, client) => {
-    message.channel.sendTyping();
     const user = message.author;
     const guilds = client.guilds.cache.filter(guild => guild.members.cache.has(user.id));
     if (guilds.size === 0) {
@@ -29,7 +29,22 @@ module.exports = async (message, client) => {
     } else if (guilds.size === 1) {
         const guild = guilds.first();
 
-        const modmailChannel = guild.channels.cache.find(channel => { channel.name === 'modmail' });
+        await modmailChannel(guild, message);
+
+        const messageSent = {
+            author: {
+                name: `${interaction.user.tag}`,
+                icon_url: `${interaction.user.displayAvatarURL()}`
+            },
+            color: 0x00ff00,
+            description: message.content,
+            footer: {
+                text: `${guild.name} | ${guildId}`,
+                icon_url: `${guild.iconURL()}`
+            }
+        }
+    
+        await interaction.reply({ content: 'Modmail Sent!', embeds: [messageSent] })
         return;
     } else {
         return;
