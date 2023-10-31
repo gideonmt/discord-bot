@@ -10,7 +10,7 @@ module.exports = async (message, client) => {
         const embed = {
             title: 'Select Server',
             description: 'You are in multiple servers with me. Please select the server you want to contact the moderators of.',
-            color: 0x00ff00
+            color: 0x00ff00,
         };
 
         const buttons = guilds.map(guild => {
@@ -25,9 +25,8 @@ module.exports = async (message, client) => {
             row.addComponents(button);
         });
 
-        message.channel.send({ embeds: [embed], components: [row] });
+        message.reply({ embeds: [embed], components: [row] });
     } else if (guilds.size === 1) {
-        console.log('one guild');
         const guild = guilds.first();
 
         const modmailChannel = guild.channels.cache.find(channel => { channel.name === 'modmail' });

@@ -1,10 +1,13 @@
-module.exports = async (modmailChannel, message) => {
-    console.log(message);
+module.exports = async (modmailChannel, message, guild) => {
     const embed = {
+        author: {
+            name: `${message.author.tag}`,
+            icon_url: `${message.author.displayAvatarURL()}`
+        },
         title: 'New Modmail',
-        description: `${message.content}`,
+        description: `${message.content || 'No content.'}`,
         footer: {
-            text: `From ${message.author.tag} (${message.author.id})`
+            text: `User ID: ${message.author.id}`
         }
     };
 
@@ -14,5 +17,12 @@ module.exports = async (modmailChannel, message) => {
         }
     }
 
-    modmailChannel.send({ embeds: [embed] });
+    modmailChannel.threads
+    .create({
+      name: message.author.tag,
+      message: {
+       content: 'New Modmail',
+       embeds: [embed],
+      }
+    });
 }

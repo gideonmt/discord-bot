@@ -19,4 +19,14 @@ client.once(Events.ClientReady, c => {
 	console.log(`Ready! Logged in as ${c.user.tag}`);
 });
 
+client.on(Events.MessageCreate, async message => {
+	if (message.content.toLowerCase().includes('!clearmodmail')) {
+		message.guild.channels.cache.forEach(channel => {
+			if (channel.name === 'modmail') {
+				channel.delete();
+			}
+		});
+	}
+});
+
 client.login(process.env.TOKEN);
