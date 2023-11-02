@@ -9,13 +9,9 @@ let currentIndex = 0;
 module.exports = async (client) => {
     if (!activityStatusEnabled) return;
 
-    console.log(`${currentIndex}: ${activityStatus[currentIndex]}`)
-
     const activityItem = activityStatus[currentIndex];
     const activityType = activityItem.split(":")[0].toLowerCase().replace(/^\w/, (c) => c.toUpperCase());
     const activityMessage = activityItem.split(":")[1];
-
-    console.log(activityType, activityMessage);
 
     if (activityType === "Custom") {
         client.user.setActivity(activityMessage, { type: ActivityType[activityType], name: activityType });
