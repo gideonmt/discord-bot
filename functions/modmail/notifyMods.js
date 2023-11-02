@@ -1,3 +1,5 @@
+const { ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
+
 module.exports = async (modmailChannel, message) => {
     const threads = modmailChannel.threads.cache.filter(thread => thread.name === message.author.tag);
     const thread = threads.first();
@@ -20,10 +22,20 @@ module.exports = async (modmailChannel, message) => {
         }
     }
 
-    if (thread) {
+    // button
+    const replyButton = new ButtonBuilder()
+        .setCustomId(`reply-${message.author.id}`)
+        .setLabel(`Reply to ${message.author.tag}`)
+        .setStyle(ButtonStyle.Primary);
+
+    const row = new ActionRowBuilder();
+        row.addComponents(replyButton);
+
+    if (thread && thread.archived === false) {
         thread.send({
             content: 'New Modmail',
             embeds: [embed],
+            components: [row]
         });
     } else {
         modmailChannel.threads
@@ -32,6 +44,7 @@ module.exports = async (modmailChannel, message) => {
                 message: {
                     content: 'New Modmail',
                     embeds: [embed],
+                    components: [row]
                 }
             });
     }

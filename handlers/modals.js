@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const replyModal = require('../functions/modmail/replyModal');
 
 module.exports = {
     handleModalSubmit: async (interaction) => {
@@ -25,6 +26,8 @@ module.exports = {
                     ephemeral: true,
                 });
             }
+        } else if (modalId.startsWith('modal-reply-')) {
+            replyModal(interaction);
         } else {
             interaction.reply({
                 content: 'Modal command not found.',

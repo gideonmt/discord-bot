@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const guildButton = require('../functions/modmail/guildButton');
+const replyButton = require('../functions/modmail/replyButton');
 
 module.exports = {
     handleButtons: async (interaction, client) => {
@@ -28,6 +29,8 @@ module.exports = {
             }
         } else if (buttonId.startsWith('modmail-')) {
             guildButton(interaction, client);
+        } else if (buttonId.startsWith('reply-')) {
+            replyButton(interaction, client);
         } else {
             interaction.reply({
                 content: `Button command not found. ButtonId: ${buttonId}`,
