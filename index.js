@@ -15,6 +15,11 @@ events(client);
 const server = require('./website/server');
 server();
 
+const activityStatus = require('./functions/activityStatus');
+setInterval(() => {
+	activityStatus(client);
+}, 10000);
+
 client.once(Events.ClientReady, c => {
 	console.log(`Ready! Logged in as ${c.user.tag}`);
 });
