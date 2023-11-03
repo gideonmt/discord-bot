@@ -12,7 +12,7 @@ module.exports = () => {
 
     app.use(bodyParser.json());
 
-    app.get('/api/settings', (req, res) => {
+    app.get('/api/settings', (res) => {
         const data = fs.readFileSync('settings.json');
         const settings = JSON.parse(data);
         res.json(settings);

@@ -35,6 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const modmailEnabled = document.getElementById('modmail-enabled');
     const autoResponseTextarea = document.getElementById('auto-response');
     const autoReactionInput = document.getElementById('auto-reaction');
+    const pingId = document.getElementById('ping-id');
+    const pingFor = document.getElementById('ping-for');
 
     // activity status
     const activityStatusEnabled = document.getElementById('activity-status-enabled');
@@ -158,13 +160,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // activity status
     addActivityStatusButton.addEventListener('click', () => {
         const newActivityStatus = `${activityStatusType.value}: ${activityStatusText.value}`;
-        if (newActivityStatus) {
+        if (newActivityStatus && activityStatusType.value && activityStatusText.value) {
             const listItem = document.createElement('li');
             listItem.textContent = newActivityStatus;
             activityStatusList.appendChild(listItem);
             activityStatusText.value = '';
-        } else
+        } else if (activityStatusType.value) {
             alert('Please enter a message.');
+        } else if (activityStatusText.value) {
+            alert('Please enter a type.');
+        } else {
+            alert('Please enter a type and a message.');
+        }
     });
 
     settingsForm.addEventListener('submit', (e) => {
@@ -210,6 +217,8 @@ document.addEventListener('DOMContentLoaded', () => {
             modmailEnabled: modmailEnabled.checked,
             autoResponse: autoResponseTextarea.value,
             autoReaction: autoReactionInput.value,
+            pingId: pingId.value,
+            pingFor: pingFor.value,
             activityStatusEnabled: activityStatusEnabled.checked,
             activityStatus: activityStatus,
         };

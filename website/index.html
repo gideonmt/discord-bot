@@ -129,7 +129,7 @@
             <div>
                 <div class="title">
                     <input type="checkbox" id="starboard-enabled" name="starboardEnabled">
-                    <h2>Starboard [WIP]</h2>
+                    <h2>Starboard</h2>
                 </div>
                 <p>When enabled, messages that meet the reaction requiremnets will be posted in the starboard channel.
                 </p>
@@ -155,7 +155,7 @@
             <div>
                 <div class="title">
                     <input type="checkbox" id="modmail-enabled" name="modmailEnabled">
-                    <h2>Modmail [WIP]</h2>
+                    <h2>Modmail</h2>
                 </div>
                 <p>When enabled, members will be abled to contact moderators via DMs with the bot.</p>
             </div>
@@ -169,6 +169,20 @@
             <div>
                 <label for="auto-reaction">Auto Reaction:</label>
                 <input type="text" id="auto-reaction" name="autoReaction">
+            </div>
+            <div>
+                <label for="ping-id">Moderator Ping ID:</label>
+                <input type="text" id="ping-id" name="pingId" placeholder="Leave blank if you do not want anyone to be pinged.">
+            </div>
+            <div>
+                <label for="ping-for">Ping For:</label>
+                <select id="ping-for">
+                    <option value="" disabled selected>Select a ping type</option>
+                    <option value="all">All modmail messages</option>
+                    <option value="timed">Messages after 5 minutes of inactivity</option>
+                    <option value="new">New modmails only</option>
+                    <option value="none">None</option>
+                </select>
             </div>
         </div>
 
