@@ -47,6 +47,6 @@
     "starboardEmojis": "⭐️, 🔥, ❤️",
     "starboardReactions": 5,
     "modmailEnabled": true,
-    "autoResponse": "Thank you for contacting the moderators. We will respond ASAP.",
-    "autoReaction": "✅"
+    "pingId": "969683714302939206",
+    "pingFor": "timed"
 }

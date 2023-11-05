@@ -215,8 +215,6 @@ document.addEventListener('DOMContentLoaded', () => {
             starboardEmojis: starboardEmojisInput.value,
             starboardReactions: parseInt(starboardReactionsInput.value),
             modmailEnabled: modmailEnabled.checked,
-            autoResponse: autoResponseTextarea.value,
-            autoReaction: autoReactionInput.value,
             pingId: pingId.value,
             pingFor: pingFor.value,
             activityStatusEnabled: activityStatusEnabled.checked,
