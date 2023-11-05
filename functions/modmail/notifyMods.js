@@ -24,6 +24,12 @@ module.exports = async (modmailChannel, message, client) => {
         embed.image = {
             url: message.attachments.first().url
         }
+        embed.fields = [
+            {
+                name: 'Attachments',
+                value: `${message.attachments.map(attachment => `[${attachment.name}](${attachment.url})`).join('\n')}`
+            }
+        ]
     }
 
     if (pingFor === 'all') {

@@ -43,6 +43,18 @@ module.exports = async (message, client) => {
                 icon_url: `${guild.iconURL()}`
             }
         }
+
+        if (message.attachments.size > 0) {
+            messageSent.image = {
+                url: message.attachments.first().url
+            }
+            messageSent.fields = [
+                {
+                    name: 'Attachments',
+                    value: `${message.attachments.map(attachment => `[${attachment.name}](${attachment.url})`).join('\n')}`
+                }
+            ]
+        }
     
         await interaction.reply({ content: 'Modmail Sent!', embeds: [messageSent] })
         return;
