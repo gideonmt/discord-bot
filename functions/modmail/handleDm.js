@@ -29,7 +29,7 @@ module.exports = async (message, client) => {
     } else if (guilds.size === 1) {
         const guild = guilds.first();
 
-        await modmailChannel(guild, message);
+        await modmailChannel(guild, message, client);
 
         const messageSent = {
             author: {

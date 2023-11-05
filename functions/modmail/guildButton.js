@@ -7,7 +7,7 @@ module.exports = async (interaction, client) => {
     const buttonMessage = interaction.message;
     const message = await buttonMessage.fetchReference();
 
-    await modmailChannel(guild, message);
+    await modmailChannel(guild, message, client);
 
     const messageSent = {
         author: {

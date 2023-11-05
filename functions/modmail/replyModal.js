@@ -3,13 +3,19 @@ module.exports = async (interaction) => {
 
     const replyMessage = interaction.fields.getTextInputValue("replyModalInput")
 
+    const guild = interaction.guild;
+
     const embed = {
         author: {
             name: `${interaction.user.tag}`,
             icon_url: `${interaction.user.displayAvatarURL()}`
         },
         color: 0x00ff00,
-        description: replyMessage
+        description: replyMessage,
+        footer: {
+            text: `${guild.name} | ${guild.id}`,
+            icon_url: `${guild.iconURL()}`
+        }
     }
 
     const user = await interaction.client.users.fetch(userId);

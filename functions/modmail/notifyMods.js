@@ -1,8 +1,12 @@
 const { ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
+const settings = require('../../settings.json');
+const pingFor = settings.pingFor;
+const pingId = settings.pingId;
 
-module.exports = async (modmailChannel, message) => {
+module.exports = async (modmailChannel, message, client) => {
     const threads = modmailChannel.threads.cache.filter(thread => thread.name === message.author.tag);
     const thread = threads.first();
+    let content = 'New Modmail'
 
     const embed = {
         author: {
@@ -22,6 +26,28 @@ module.exports = async (modmailChannel, message) => {
         }
     }
 
+    if (pingFor === 'all') {
+        content = `<@&${pingId}> ${content}`;
+    } else if (pingFor === 'new' && !thread || thread.archived === true) {
+        content = `<@&${pingId}> ${content}`;
+    } else if (pingFor === 'none') {
+        content = content;
+    } else if (pingFor === 'timed' && !thread || thread.archived === true) {
+        content = `<@&${pingId}> ${content}`;
+    } else if (pingFor === 'timed' && thread || thread.archived === false) {
+        const messages = await thread.messages.fetch({ limit: 100 });
+        const lastMessage = messages.first();
+        const lastMessageTime = lastMessage.createdAt.getTime();
+        const currentTime = Date.now();
+        const timeDifference = currentTime - lastMessageTime;
+        const timeDifferenceMinutes = timeDifference / 60000;
+        if (timeDifferenceMinutes < 5 && lastMessage.author === client.user) {
+            content = `<@&${pingId}> ${content}`;
+        } else {
+            content = content;
+        }
+    }
+
     // button
     const replyButton = new ButtonBuilder()
         .setCustomId(`reply-${message.author.id}`)
@@ -29,11 +55,11 @@ module.exports = async (modmailChannel, message) => {
         .setStyle(ButtonStyle.Primary);
 
     const row = new ActionRowBuilder();
-        row.addComponents(replyButton);
+    row.addComponents(replyButton);
 
     if (thread && thread.archived === false) {
         thread.send({
-            content: 'New Modmail',
+            content: content,
             embeds: [embed],
             components: [row]
         });
@@ -42,7 +68,7 @@ module.exports = async (modmailChannel, message) => {
             .create({
                 name: message.author.tag,
                 message: {
-                    content: 'New Modmail',
+                    content: content,
                     embeds: [embed],
                     components: [row]
                 }
