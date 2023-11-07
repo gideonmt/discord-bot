@@ -52,7 +52,6 @@ module.exports = {
 
             const embed = {
                 title: `Reminders`,
-                // list of reminders in description
                 description: reminders.map(reminder => {
                     return `**Message:** ${reminder.message}\n**Time left:** <t:${Math.floor(reminder.time / 1000)}:R>\n`
                 }).join('\n'),
