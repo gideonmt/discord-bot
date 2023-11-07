@@ -1,17 +1,17 @@
 module.exports = (sequelize, DataTypes) => {
     const Sequelize = require('sequelize');
-    return sequelize.define('reminder', {
-        time: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
-        },
-        message: {
-            type: Sequelize.STRING,
-            allowNull: false,
-        },
+    return sequelize.define('modmailBan', {
         user: {
             type: Sequelize.INTEGER,
             allowNull: false,
         },
+        guild: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+        },
+        reason: {
+            type: Sequelize.STRING,
+            allowNull: true,
+        },
     });
-};
+}

@@ -13,6 +13,7 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 });
 
 require('./models/Reminders')(sequelize, Sequelize.DataTypes);
+require('./models/modmailBans')(sequelize, Sequelize.DataTypes);
 
 const force = process.argv.includes('--force') || process.argv.includes('-f');
 
