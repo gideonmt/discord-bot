@@ -1,74 +1,102 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { addReminder } = require('../../../functions/db/db');
+const { addReminder, removeReminder, getReminders } = require('../../../functions/db/db');
+const { timeToMs } = require('../../../functions/timeToMs');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('remind')
         .setDescription('Reminds you about something.')
-        .addStringOption(option => option.setName('time').setDescription('How long to wait before reminding you.').setRequired(true))
-        .addStringOption(option => option.setName('message').setDescription('The message to remind you with.').setRequired(true)),
-    async execute(interaction) {
-        const time = interaction.options.getString('time');
-        const message = interaction.options.getString('message');
-        const user = interaction.user;
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('list')
+                .setDescription('Lists your reminders.')
+        )
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('remove')
+                .setDescription('Removes a reminder.')
+                .addStringOption(option => option.setName('reminder').setDescription('The reminder you want to remove.').setRequired(true).setAutocomplete(true))
+        )
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('add')
+                .setDescription('Adds a reminder.')
+                .addStringOption(option => option.setName('time').setDescription('How long to wait before reminding you.').setRequired(true))
+                .addStringOption(option => option.setName('message').setDescription('The message to remind you with.').setRequired(true))
+        ),
+    async autocomplete(interaction) {
+        const subcommand = interaction.options.getSubcommand();
+        if (subcommand === 'remove') {
+            const focusedValue = interaction.options.getFocused();
 
-        const timeUnits = {
-            s: 1000,
-            sec: 1000,
-            secs: 1000,
-            second: 1000,
-            seconds: 1000,
-            m: 60000,
-            min: 60000,
-            mins: 60000,
-            minute: 60000,
-            minutes: 60000,
-            h: 3600000,
-            hr: 3600000,
-            hrs: 3600000,
-            hour: 3600000,
-            hours: 3600000,
-            d: 86400000,
-            day: 86400000,
-            days: 86400000,
-            w: 604800000,
-            wk: 604800000,
-            wks: 604800000,
-            week: 604800000,
-            weeks: 604800000,
-            fortnight: 1209600000,
-            "4tnite": 1209600000,
-            mo: 2629746000,
-            month: 2629746000,
-            months: 2629746000,
-            year: 31556952000,
-            yr: 31556952000,
-            yrs: 31556952000,
-            years: 31556952000,
-        };
+            const user = interaction.user.id;
 
-        const regex = /(\d+)\s*([a-zA-Z]+)/g;
-        let match;
-        let timeMs = 0;
+            const reminders = await getReminders(user);
 
-        while ((match = regex.exec(time)) !== null) {
-            const quantity = parseInt(match[1], 10);
-            const unit = match[2].toLowerCase();
-
-            if (timeUnits[unit]) {
-                timeMs += quantity * timeUnits[unit];
-            }
+            const filtered = reminders.filter(reminder => reminder.message.startsWith(focusedValue));
+            await interaction.respond(
+                filtered.map(choice => ({ name: choice.message, value: choice.message })),
+            );
         }
+    },
+    async execute(interaction) {
+        const subcommand = interaction.options.getSubcommand();
 
-        const timestamp = Date.now() + timeMs;
+        if (subcommand === 'list') {
+            const user = interaction.user.id;
+            const reminders = await getReminders(user);
 
-        const reminder = await addReminder(user, timestamp, message)
+            if (reminders.length === 0) {
+                return interaction.reply({ content: "You don't have any reminders.", ephemeral: true });
+            }
 
-        const embed = {
-            title: `Reminder`,
-            description: `I will remind you in ${time} with the message ${reminder.message}.`,
-        };
+            const embed = {
+                title: `Reminders`,
+                // list of reminders in description
+                description: reminders.map(reminder => {
+                    return `**Message:** ${reminder.message}\n**Time left:** <t:${Math.floor(reminder.time / 1000)}:R>\n`
+                }).join('\n'),
+            };
 
-        interaction.reply({ embeds: [embed] });
+            return await interaction.reply({ embeds: [embed] });
+        } else if (subcommand === 'remove') {
+            const reminderInput = interaction.options.getString('reminder');
+            const reminders = await getReminders(interaction.user.id);
+            const reminder = reminders.find(reminder => reminder.message === reminderInput);
+
+            if (!reminder) {
+                return interaction.reply({ content: "You don't have a reminder with that message.", ephemeral: true });
+            }
+
+            const user = interaction.user.id;
+            const message = reminder.message;
+
+            await removeReminder(user, message);
+
+            return interaction.reply({ content: `Removed the reminder with the message: ${reminder.message}`, ephemeral: true });
+        } else if (subcommand === 'add') {
+            const time = interaction.options.getString('time');
+            const message = interaction.options.getString('message');
+            const user = interaction.user;
+
+            let timeMs = timeToMs(time);
+
+            if (timeMs < 120000) {
+                return interaction.reply({ content: "You can't set a reminder for less than 2 minutes.", ephemeral: true })
+            } else if (timeMs > 31536000000) {
+                return interaction.reply({ content: "You can't set a reminder for more than a year.", ephemeral: true })
+            }
+
+            const timestamp = Date.now() + timeMs;
+
+            const reminder = await addReminder(user, timestamp, message)
+
+            const embed = {
+                title: `Reminder`,
+                description: `I will remind you in ${time} with the message ${reminder.message}.`,
+            };
+
+            interaction.reply({ embeds: [embed] });
+        }
     },
 };
