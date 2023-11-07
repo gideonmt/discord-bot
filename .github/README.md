@@ -31,13 +31,26 @@ To use this Discord bot, follow these simple steps:
    ```
    TOKEN=YOU_BOT_TOKEN
    CLIENT_ID=YOU_CLIENT_ID
+
+   # API KEYS
+   NASA_API_KEY=YOUR_NASA_API_KEY # Create one at https://api.nasa.gov/ or leave blank to use the demo key.
    ```
+
+If you don't have a bot token or client ID yet, you can follow the steps in the [Creating a Discord Bot Application](#creating-a-discord-bot-application) section to create a bot application and obtain the necessary token and client ID.
 
 3. Install the required dependencies by running the following command in your terminal:
 
    ```bash
    pnpm install
    ```
+
+4. Initialize the Database
+
+   ```bash
+   node functions/db/init.js
+   ```
+
+This script will set up the necessary database tables. If you ever make changes to the database models, you can use the --force or -f option to force synchronization of the tables. Be cautious when using this option as it will empty and recreate the model tables. This will delete all the data you previously had stored. 
 
 ### 3. Deploy and Run
 
