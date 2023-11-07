@@ -47,7 +47,7 @@ module.exports = {
             const path = require('path');
 
             const rootDirectory = path.join(__dirname, '..');
-            
+
             function getFolderInfo(directory) {
                 const folders = fs.readdirSync(directory);
                 const folderInfo = [];
@@ -95,12 +95,23 @@ module.exports = {
         const embed = {
             title: commandName,
             description: commandDescription,
-            fields: [
-                {
-                    name: `Usage`,
-                    value: `/${commandName} ${commandOptions}`
-                }
-            ]
+            fields: []
+        }
+
+        const noSubcommands = commandDataOptions.some(option => option.type);
+
+        if (!noSubcommands && commandDataOptions.length > 0) {
+            commandDataOptions.map(option => {
+                embed.fields.push({
+                    name: option.name,
+                    value: option.description
+                })
+            })
+        } else {
+            embed.fields.push({
+                name: `Usage`,
+                value: `/${commandName} ${commandOptions}`
+            })
         }
 
         interaction.reply({ embeds: [embed] });
