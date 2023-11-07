@@ -20,6 +20,11 @@ setInterval(() => {
 	activityStatus(client);
 }, 10000);
 
+const { checkReminders } = require('./functions/db/db');
+setInterval(() => {
+	checkReminders(client);
+}, 1000);
+
 client.once(Events.ClientReady, c => {
 	console.log(`Ready! Logged in as ${c.user.tag}`);
 });
