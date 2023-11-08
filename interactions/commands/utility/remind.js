@@ -80,7 +80,9 @@ module.exports = {
 
             let timeMs = timeToMs(time);
 
-            if (timeMs < 120000) {
+            if (timeMs === 0) {
+                return interaction.reply({ content: 'Please enter a valid time, such as "10d" for 10 days.', ephemeral: true });
+            } else if (timeMs < 120000) {
                 return interaction.reply({ content: "You can't set a reminder for less than 2 minutes.", ephemeral: true })
             } else if (timeMs > 31536000000) {
                 return interaction.reply({ content: "You can't set a reminder for more than a year.", ephemeral: true })

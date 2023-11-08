@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
     const Sequelize = require('sequelize');
     return sequelize.define('reminder', {
         time: {
-            type: Sequelize.INTEGER,
+            type: Sequelize.STRING,
             allowNull: false,
         },
         message: {
@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
         },
         user: {
-            type: Sequelize.INTEGER,
+            type: Sequelize.STRING,
             allowNull: false,
         },
     });

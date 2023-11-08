@@ -48,8 +48,8 @@ async function modmailBanAdd(user, guild, reason) {
 	await ModmailBans.sync();
 	
 	const modmailBan = await ModmailBans.create({
-		user: user.id,
-		guild: guild.id,
+		user: user,
+		guild: guild,
 		reason: reason,
 	});
 
@@ -66,12 +66,10 @@ async function modmailBanRemove(user, guild) {
 	await modmailBan.destroy();
 }
 
-async function getModmailBan(user, guild) {
+async function getModmailBans(guild) {
 	const ModmailBans = require('./dbObjects').ModmailBans;
-
-	const modmailBan = await ModmailBans.findOne({ where: { user: user.id, guild: guild.id } });
-
+	const modmailBan = await ModmailBans.findAll({ where: { guild: guild } });
 	return modmailBan;
 }
 
-module.exports = { addReminder, removeReminder, checkReminders, getReminders, modmailBanAdd, getModmailBan };
+module.exports = { addReminder, removeReminder, checkReminders, getReminders, modmailBanAdd, modmailBanRemove, getModmailBans };
