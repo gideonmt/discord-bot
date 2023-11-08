@@ -101,16 +101,17 @@ module.exports = {
         const noSubcommands = commandDataOptions.some(option => option.type);
 
         if (!noSubcommands && commandDataOptions.length > 0) {
-            commandDataOptions.map(option => {
+            commandDataOptions.forEach(option => {
+                const suboptionNames = option.options.map(suboption => `[${suboption.name}]`).join(', ');
                 embed.fields.push({
                     name: option.name,
-                    value: option.description
-                })
-            })
+                    value: `${option.description}\nUsage: \`/${option.name} ${suboptionNames}\``
+                });
+            });            
         } else {
             embed.fields.push({
                 name: `Usage`,
-                value: `/${commandName} ${commandOptions}`
+                value: `\`/${commandName} ${commandOptions}\``
             })
         }
 

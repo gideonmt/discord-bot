@@ -3,46 +3,32 @@ const { getModmailBans, modmailBanAdd } = require('../../../functions/db/db');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('modmail-ban')
+        .setName('modmail')
         .setDescription('Ban a member from using modmail.')
         .addSubcommand(subcommand =>
             subcommand
-                .setName('add')
+                .setName('ban-add')
                 .setDescription('Ban a member from using modmail.')
                 .addUserOption(option => option.setName('target').setDescription('The member to ban.').setRequired(true))
                 .addStringOption(option => option.setName('reason').setDescription('The reason for banning the member.')))
         .addSubcommand(subcommand =>
             subcommand
-                .setName('remove')
+                .setName('ban-remove')
                 .setDescription('Unban a member from using modmail.')
                 .addStringOption(option => option.setName('target').setDescription('The member to unban.').setRequired(true).setAutocomplete(true)))
         .addSubcommand(subcommand =>
             subcommand
-                .setName('list')
+                .setName('ban-list')
                 .setDescription('List members banned from using modmail.')),
     async autocomplete(interaction) {
         const subcommand = interaction.options.getSubcommand();
-        if (subcommand === 'remove') {
-            const focusedValue = interaction.options.getFocused();
-
-            const modmailBans = await getModmailBans(interaction.guild.id);
-
-            const filtered = modmailBans.filter(ban => ban.user.startsWith(focusedValue));
-            await interaction.respond(
-                filtered.map(choice => ({ name: choice.user, value: choice.user })),
-            );
-        }
-    },
-    async autocomplete(interaction) {
-        const subcommand = interaction.options.getSubcommand();
-        if (subcommand === 'remove') {
+        if (subcommand === 'ban-remove') {
             const focusedValue = interaction.options.getFocused();
             const guild = interaction.guild.id;
 
             const modmailBans = await getModmailBans(guild);
 
-            console.log(modmailBans)
-            const filtered = modmailBans
+            const filtered = modmailBans.filter(ban => ban.user.startsWith(focusedValue));
             await interaction.respond(
                 filtered.map(choice => ({ name: choice.user, value: choice.user })),
             );
@@ -55,7 +41,7 @@ module.exports = {
 
         const subcommand = interaction.options.getSubcommand();
 
-        if (subcommand === 'list') {
+        if (subcommand === 'ban-list') {
             const guild = interaction.guild.id;
             const modmailBans = await getModmailBans(guild);
 
@@ -65,7 +51,6 @@ module.exports = {
 
             const embed = {
                 title: `Modmail Banned Members`,
-                description: `Here are the banned members:`,
                 fields: [],
             };
 
@@ -81,7 +66,7 @@ module.exports = {
             };
 
             return await interaction.reply({ embeds: [embed] });
-        } else if (subcommand === 'remove') {
+        } else if (subcommand === 'ban-remove') {
             const user = interaction.options.getString('target');
             const modmailBans = await getModmailBans(interaction.guild.id);
             const ban = modmailBans.find(ban => ban.user === user);
@@ -93,7 +78,7 @@ module.exports = {
 
             modmailBanRemove(guild);
             return interaction.reply({ content: `You modmail unbanned: **${user}**`, ephemeral: true });
-        } else if (subcommand === 'add') {
+        } else if (subcommand === 'ban-add') {
             const member = interaction.options.getMember('target');
             const user = member.user.id;
             const guild = interaction.guild.id;

@@ -1,3 +1,13 @@
 # TODO
 - Update README.md with information about the website and configuration
-- 
+- XP system
+- Mod logs
+- Warn members
+- Polls
+- Custom Commands
+    - open modal
+    - buttons
+    - select menus
+    - reply
+    - DM user
+    - 
