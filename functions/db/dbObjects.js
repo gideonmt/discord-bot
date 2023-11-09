@@ -8,6 +8,6 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 });
 
 const Reminders = require('./models/Reminders')(sequelize, DataTypes);
-const ModmailBans = require('./models/modmailBans')(sequelize, DataTypes);
+const ModmailBans = require('./models/ModmailBans')(sequelize, DataTypes);
 
 module.exports = { Reminders, ModmailBans };
