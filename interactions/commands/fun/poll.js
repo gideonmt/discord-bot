@@ -135,7 +135,7 @@ module.exports = {
                 for (const option of options) {
                     embed.description += `${option} - 0 votes (0%)\n`;
                 } if (permissive === true) {
-                    embed.description += `Other - 0 votes (0%)\n`
+                    embed.description += `Other - 0 votes (0%)\n`;
                 }
             } else {
                 for (const option of options) {
@@ -162,10 +162,6 @@ module.exports = {
                 .setCustomId(`poll-options`)
                 .setPlaceholder('Select an option')
                 .addOptions(selectOptions);
-
-            console.log(selectOptions)
-
-            console.log(optionSelect.options)
 
             const endPollButton = new ButtonBuilder()
                 .setCustomId(`poll-end`)

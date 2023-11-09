@@ -3,6 +3,9 @@ const { pollRemove } = require("../../functions/db/db");
 
 module.exports = (interaction) => {
     const message = interaction.message.id;
+    if (interaction.user.username !== interaction.message.embeds[0].author.name) {
+        return interaction.reply({ content: "You can only close polls that you created.", ephemeral: true })
+    }
 
     const embed = interaction.message.embeds[0]
 
