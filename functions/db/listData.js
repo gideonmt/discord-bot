@@ -1,5 +1,5 @@
 async function listData() {
-    const { Reminders, ModmailBans } = require('../../functions/db/dbObjects');
+    const { Reminders, ModmailBans, Polls } = require('../../functions/db/dbObjects');
 
     console.log('Reminders:');
 
@@ -24,6 +24,21 @@ async function listData() {
         for (const modmailBan of modmailBans) {
             console.log(modmailBan);
             console.log('\n.');
+        }
+    }
+
+    console.log('\nPolls:');
+
+    const polls = await Polls.findAll();
+    
+    if (!polls[0]) {
+        console.log('No polls found.');
+    } else {
+        for (const poll of polls) {
+            console.log(poll);
+            console.log('\n.');
+            console.log(poll.options)
+            console.log('\n')
         }
     }
 

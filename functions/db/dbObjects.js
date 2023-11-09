@@ -9,5 +9,6 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 
 const Reminders = require('./models/Reminders')(sequelize, DataTypes);
 const ModmailBans = require('./models/ModmailBans')(sequelize, DataTypes);
+const Polls = require('./models/Polls')(sequelize, DataTypes);
 
-module.exports = { Reminders, ModmailBans };
+module.exports = { Reminders, ModmailBans, Polls };

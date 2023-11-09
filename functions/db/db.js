@@ -1,12 +1,12 @@
 async function addReminder(user, time, message) {
 	const Reminders = require('./dbObjects').Reminders;
 	await Reminders.sync();
-	
+
 	const reminder = await Reminders.create({
-        user: user.id,
-        time: time,
-        message: message,
-    });
+		user: user.id,
+		time: time,
+		message: message,
+	});
 
 	return reminder;
 }
@@ -46,7 +46,7 @@ async function removeReminder(user, message) {
 async function modmailBanAdd(user, guild, reason) {
 	const ModmailBans = require('./dbObjects').ModmailBans;
 	await ModmailBans.sync();
-	
+
 	const modmailBan = await ModmailBans.create({
 		user: user,
 		guild: guild,
@@ -72,4 +72,74 @@ async function getModmailBans(guild) {
 	return modmailBan;
 }
 
-module.exports = { addReminder, removeReminder, checkReminders, getReminders, modmailBanAdd, modmailBanRemove, getModmailBans };
+async function pollAdd(message, options, endTime, type) {
+	const Polls = require('./dbObjects').Polls;
+	await Polls.sync();
+
+	const optionsArray = [];
+	for (const option of options) {
+		optionsArray.push({
+			option: option,
+			votes: [],
+		});
+	}
+
+	const poll = await Polls.create({
+		message: message,
+		endTime: endTime,
+		options: optionsArray,
+		type: type,
+	});
+
+	return poll;
+}
+
+async function pollRemove(message) {
+	const Polls = require('./dbObjects').Polls;
+	await Polls.sync();
+
+	const poll = await Polls.findOne({ where: { message: message } });
+
+	if (!poll) return;
+	poll.destroy();
+}
+
+async function getPolls() {
+	const Polls = require('./dbObjects').Polls;
+	await Polls.sync();
+
+	const polls = await Polls.findAll();
+
+	return polls;
+}
+
+async function pollVote(message, user, option) {
+	const Polls = require('./dbObjects').Polls;
+	await Polls.sync();
+
+	const poll = await Polls.findOne({ where: { message: message } });
+
+	if (!poll) return;
+
+	const optionObject = poll.options.find(opt => opt.option === option);
+
+	if (optionObject) {
+		if (optionObject.votes.some(vote => vote === user)) {
+			optionObject.votes = optionObject.votes.filter(vote => vote !== user);
+		} else {
+			optionObject.votes.push(user);
+		}
+		await Polls.update(
+			{ options: poll.options },
+			{ where: { message: message } }
+		);
+	}
+
+	return pollVote;
+}
+
+module.exports = {
+	addReminder, removeReminder, checkReminders, getReminders,
+	modmailBanAdd, modmailBanRemove, getModmailBans,
+	pollAdd, pollRemove, getPolls, pollVote,
+};

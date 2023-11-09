@@ -14,6 +14,7 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 
 require('./models/Reminders')(sequelize, Sequelize.DataTypes);
 require('./models/ModmailBans')(sequelize, Sequelize.DataTypes);
+require('./models/Polls')(sequelize, Sequelize.DataTypes);
 
 const force = process.argv.includes('--force') || process.argv.includes('-f');
 
