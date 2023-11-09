@@ -134,6 +134,8 @@ module.exports = {
             if (results === null || results === true) {
                 for (const option of options) {
                     embed.description += `${option} - 0 votes (0%)\n`;
+                } if (permissive === true) {
+                    embed.description += `Other - 0 votes (0%)\n`
                 }
             } else {
                 for (const option of options) {
@@ -147,12 +149,23 @@ module.exports = {
             const endTime = Date.now() + timeMs;
             embed.description += `\nEnds in <t:${Math.floor(endTime / 1000)}:R>.`
 
+            let selectOptions = [];
+            for (const option in options) {
+                selectOptions.push(new StringSelectMenuOptionBuilder().setLabel(options[option]).setValue(`option-${(Number(option) + 1).toString()}`))
+            }
+
+            if (permissive === true) {
+                selectOptions.push(new StringSelectMenuOptionBuilder().setLabel('Other').setValue('option-other'))
+            }
+
             const optionSelect = new StringSelectMenuBuilder()
                 .setCustomId(`poll-options`)
                 .setPlaceholder('Select an option')
-                .addOptions(
-                    options.map(option => new StringSelectMenuOptionBuilder().setLabel(option).setValue(`option-${(options.indexOf(option) + 1).toString()}`)),
-                )
+                .addOptions(selectOptions);
+
+            console.log(selectOptions)
+
+            console.log(optionSelect.options)
 
             const endPollButton = new ButtonBuilder()
                 .setCustomId(`poll-end`)
@@ -183,6 +196,10 @@ module.exports = {
                 if (option) {
                     options.push(option);
                 }
+            }
+
+            if (permissive === true) {
+                options.push('other');
             }
 
             const embed = {
