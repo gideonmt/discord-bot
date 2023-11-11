@@ -4,7 +4,7 @@ const { timeToMs } = require('../../../functions/timeToMs');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('ban')
-		.setDescription('Ban a member.')
+		.setDescription('Manage guild bans.')
 		.addSubcommand(subcommand =>
 			subcommand
 				.setName('add')

@@ -7,7 +7,19 @@ module.exports = (interaction) => {
         return interaction.reply({ content: "You can only close polls that you created.", ephemeral: true })
     }
 
-    const embed = interaction.message.embeds[0]
+    let description = interaction.message.embeds[0].description
+    // remove the last line of the description
+    const descriptionArray = description.split('\n')
+    description = descriptionArray.slice(0, descriptionArray.length - 1).join('\n')
+
+    const embed = {
+        author: {
+            name: interaction.message.embeds[0].author.name,
+            icon_url: interaction.message.embeds[0].author.iconURL,
+        },
+        title: interaction.message.embeds[0].title,
+        description: description,
+    }
 
     let components = interaction.message.components
     const rows = components.map(row => row)
