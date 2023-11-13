@@ -102,11 +102,12 @@ async function pollRemove(message, client) {
 	const poll = await Polls.findOne({ where: { message: message } });
 
 	if (!poll) return;
-	const user = client.users.cache.get(poll.user);
+	const user = await client.users.fetch(poll.creator);
 	const embed = {
 		title: `Poll Results`,
 		description: poll.options.map(opt => `${opt.option}: ${opt.votes.length}`).join('\n'),
 	};
+
 	user.send({ content: `Your poll has ended.`, embeds: [embed] });
 	poll.destroy();
 }
