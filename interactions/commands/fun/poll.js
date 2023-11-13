@@ -63,6 +63,7 @@ module.exports = {
             const timed = interaction.options.getString('timed') || "7d";
             const type = 'normal';
             const options = ['yes', 'no']
+            const user = interaction.user.id;
 
             const embed = {
                 author: {
@@ -103,7 +104,7 @@ module.exports = {
 
             interaction.channel.send({ embeds: [embed], components: [row] }).then(fullMessage => {
                 const message = fullMessage.id;
-                pollAdd(message, options, endTime, type)
+                pollAdd(message, options, endTime, type, user)
             });
 
             return interaction.reply({ content: `Poll created!`, ephemeral: true });
@@ -113,6 +114,7 @@ module.exports = {
             const permissive = interaction.options.getBoolean('permissive') || false;
             const results = interaction.options.getBoolean('results');
             const timed = interaction.options.getString('timed') || "7d";
+            const user = interaction.user.id;
             const type = 'straw';
 
             let options = [];
@@ -176,7 +178,7 @@ module.exports = {
 
             interaction.channel.send({ embeds: [embed], components: [selectRow, buttonRow] }).then(fullMessage => {
                 const message = fullMessage.id;
-                pollAdd(message, options, endTime, type)
+                pollAdd(message, options, endTime, type, user)
             });
 
             interaction.reply({ content: `Poll created!`, ephemeral: true });

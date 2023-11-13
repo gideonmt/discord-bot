@@ -14,7 +14,7 @@ module.exports = {
             try {
                 const buttonHandler = require(filePath);
                 if (typeof buttonHandler === 'function') {
-                    await buttonHandler(interaction);
+                    await buttonHandler(interaction, client);
                 } else {
                     interaction.reply({
                         content: `Invalid button command file. ButtonId: ${buttonId}`,

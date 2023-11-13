@@ -72,7 +72,7 @@ async function getModmailBans(guild) {
 	return modmailBan;
 }
 
-async function pollAdd(message, options, endTime, type) {
+async function pollAdd(message, options, endTime, type, user) {
 	const Polls = require('./dbObjects').Polls;
 	await Polls.sync();
 
@@ -89,18 +89,25 @@ async function pollAdd(message, options, endTime, type) {
 		endTime: endTime,
 		options: optionsArray,
 		type: type,
+		creator: user,
 	});
 
 	return poll;
 }
 
-async function pollRemove(message) {
+async function pollRemove(message, client) {
 	const Polls = require('./dbObjects').Polls;
 	await Polls.sync();
 
 	const poll = await Polls.findOne({ where: { message: message } });
 
 	if (!poll) return;
+	const user = client.users.cache.get(poll.user);
+	const embed = {
+		title: `Poll Results`,
+		description: poll.options.map(opt => `${opt.option}: ${opt.votes.length}`).join('\n'),
+	};
+	user.send({ content: `Your poll has ended.`, embeds: [embed] });
 	poll.destroy();
 }
 
@@ -140,14 +147,13 @@ async function pollVote(message, user, option) {
 
 async function checkPolls(client) {
 	const Polls = require('./dbObjects').Polls;
-	await Polls.sync();
 
 	const polls = await Polls.findAll();
 
-	for (const poll in polls) {
+	for (const poll of polls) {
 		if (poll.endTime <= Date.now()) {
 			const message = poll.message;
-			await pollRemove(message);
+			await pollRemove(message, client);
 		}
 	}
 }
