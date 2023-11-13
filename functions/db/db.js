@@ -138,8 +138,22 @@ async function pollVote(message, user, option) {
 	return pollVote;
 }
 
+async function checkPolls(client) {
+	const Polls = require('./dbObjects').Polls;
+	await Polls.sync();
+
+	const polls = await Polls.findAll();
+
+	for (const poll in polls) {
+		if (poll.endTime <= Date.now()) {
+			const message = poll.message;
+			await pollRemove(message);
+		}
+	}
+}
+
 module.exports = {
 	addReminder, removeReminder, checkReminders, getReminders,
 	modmailBanAdd, modmailBanRemove, getModmailBans,
-	pollAdd, pollRemove, getPolls, pollVote,
+	pollAdd, pollRemove, getPolls, pollVote, checkPolls,
 };

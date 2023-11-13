@@ -25,6 +25,12 @@ setInterval(() => {
 	checkReminders(client);
 }, 1000);
 
+// check polls
+const { checkPolls } = require('./functions/db/db');
+setInterval(() => {
+	checkPolls(client);
+}, 1000);
+
 client.once(Events.ClientReady, c => {
 	console.log(`Ready! Logged in as ${c.user.tag}`);
 });
