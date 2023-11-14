@@ -1,5 +1,5 @@
 async function listData() {
-    const { Reminders, ModmailBans, Polls } = require('../../functions/db/dbObjects');
+    const { Reminders, ModmailBans, Polls, Warns } = require('../../functions/db/dbObjects');
 
     console.log('Reminders:');
 
@@ -39,6 +39,19 @@ async function listData() {
             console.log('\n.');
             console.log(poll.options)
             console.log('\n')
+        }
+    }
+
+    console.log('\nWarns:');
+
+    const warns = await Warns.findAll();
+
+    if (!warns[0]) {
+        console.log('No warns found.');
+    } else {
+        for (const warn of warns) {
+            console.log(warn);
+            console.log('\n.');
         }
     }
 

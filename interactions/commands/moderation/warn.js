@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
+const { addWarn, removeWarn, listWarns } = require('../../../functions/warns');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -25,10 +26,26 @@ module.exports = {
 		),
 	async autocomplete(interaction) {
 		const subcommand = interaction.options.getSubcommand();
-        if (subcommand === 'remove' && !interaction.member.permissions.has('ModerateMembers')) {
+        if (subcommand === 'remove') {
             const focusedValue = interaction.options.getFocused();
 
-            const user = interaction.user.id;
+            const guild = interaction.guild.id;
+
+            const warns = await listWarns(guild);
+
+            let warnList = [];
+            for (const warn of warns) {
+                const username = (await interaction.guild.members.fetch(warn.user)).user.username;
+                const userId = warn.user;
+                const reason = warn.reason;
+                
+                warnList.push([`${username}, ${reason}`, `${userId}, ${warn.id}`]);
+            }
+
+            const filtered = warnList.filter(warn => warn[0].startsWith(focusedValue));
+            await interaction.respond(
+                filtered.map(choice => ({ name: choice[0].length > 100 ? choice[0].substring(0, 97) + "..." : choice[0], value: choice[1] })),
+            );
         }
 	},
 	async execute(interaction) {
@@ -40,17 +57,45 @@ module.exports = {
 
 		if (subcommand === 'list') {
             const target = interaction.options.getMember('target');
+            const guild = interaction.guild.id;
 
-            interaction.reply({ content: `WIP Command`, ephemeral: true });
+            const warns = await listWarns(guild, target.user.id);
+
+            if (warns.length === 0) {
+                return interaction.reply({ content: "This user doesn't have any warns.", ephemeral: true });
+            }
+
+            const embed = {
+                title: `Warns for ${target.user.username}`,
+                fields: [],
+            };
+
+            for (const warn of warns) {
+                embed.fields.push({
+                    name: `Warned for ${warn.reason.length > 245 ? warn.reason.substring(0, 242) + "..." : choice[0]}`,
+                    value: `Created at <t:${Math.round(warn.createdAt.getTime() / 1000)}:d>`,
+                    inline: true,
+                })
+            }
+
+            interaction.reply({ embeds: [embed], ephemeral: true });
 		} else if (subcommand === 'remove') {
-			const target = interaction.options.getString('target');
+			const warn = interaction.options.getString('warn');
+            const guild = interaction.guild.id;
+            const memberId = warn.split(', ')[0];
+            const id = warn.split(', ')[1];
+            
+            await removeWarn(memberId, guild, id);
 
-            interaction.reply({ content: `WIP Command`, ephemeral: true });
+            interaction.reply({ content: `Removed warn from <@${memberId}>.`, ephemeral: true });
 		} else if (subcommand === 'add') {
 			const member = interaction.options.getMember('target');
 			const reason = interaction.options.getString('reason');
+            const guild = interaction.guild.id;
 
-            interaction.reply({ content: `WIP Command`, ephemeral: true });
+            await addWarn(member.user.id, guild, reason);
+
+            interaction.reply({ content: `Added warn \`${reason}\` to <@${member.user.id}>.`, ephemeral: true });
 		}
 	},
 };

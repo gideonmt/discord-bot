@@ -1,6 +1,22 @@
 # TODO
 - Update README.md with information about the website and configuration
 - XP system
+    - database
+    - settings
+        - amount of xp per message
+        - amount of xp per minute in vc
+        - level roles
+        - xp booster roles
+    - add xp on message create
+    - add xp per minute in vc
+    - xp boost roles
+    - add level role to users
+    - leaderboard command
+    - xp command
+        - set level
+        - set xp
+        - add xp
+        - take away xp
 - Mod logs
 - Warn members
 - Polls
