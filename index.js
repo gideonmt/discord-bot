@@ -25,7 +25,6 @@ setInterval(() => {
 	checkReminders(client);
 }, 1000);
 
-// check polls
 const { checkPolls } = require('./functions/db/db');
 setInterval(() => {
 	checkPolls(client);

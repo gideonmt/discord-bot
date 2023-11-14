@@ -121,7 +121,7 @@ async function getPolls() {
 	return polls;
 }
 
-async function pollVote(messageObject, user, option) {
+async function pollVote(messageObject, user, option, multiple) {
 	const Polls = require('./dbObjects').Polls;
 	await Polls.sync();
 
@@ -130,6 +130,12 @@ async function pollVote(messageObject, user, option) {
 	const poll = await Polls.findOne({ where: { message: message } });
 
 	if (!poll) return;
+
+	if (multiple === false) {
+		option = option[0]
+	} else if (multiple === true) {
+		option = option
+	}
 
 	const optionObject = poll.options.find(opt => opt.option === option);
 
@@ -156,7 +162,7 @@ async function pollVote(messageObject, user, option) {
 
 	totalVotes = poll.options.reduce((total, option) => total.concat(option.votes), []);
 
-	const description = `${poll.options.map(opt => `${opt.option.charAt(0).toUpperCase() + opt.option.slice(1)}: ${opt.votes.length} votes (${Math.round(opt.votes.length / totalVotes.length * 100) || 0}%)`).join('\n')}\nTotal Votes: ${totalVotes.length}`;
+	const description = `${poll.options.map(opt => `${opt.option.charAt(0).toUpperCase() + opt.option.slice(1)}: ${opt.votes.length} votes (${Math.round(opt.votes.length / totalVotes.length * 100) || 0}%)`).join('\n')}\nTotal Votes: ${totalVotes.length}\n\nEnds <t:${Math.floor(poll.endTime / 1000)}:R>`;
 
 	const embed = {
 		author: {

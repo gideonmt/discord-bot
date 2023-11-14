@@ -76,7 +76,7 @@ module.exports = {
             const timeMs = timeToMs(timed);
 
             const endTime = Date.now() + timeMs;
-            embed.description += `\n\nEnds in <t:${Math.floor(endTime / 1000)}:R>.`;
+            embed.description += `\n\nEnds <t:${Math.floor(endTime / 1000)}:R>.`;
 
             if (results === null || results === true) {
                 embed.description = `Yes - 0 votes (0%)\nNo - 0 votes 0%\nTotal Votes - 0`;
@@ -149,7 +149,7 @@ module.exports = {
             const timeMs = timeToMs(timed);
 
             const endTime = Date.now() + timeMs;
-            embed.description += `\nEnds in <t:${Math.floor(endTime / 1000)}:R>.`
+            embed.description += `\nEnds <t:${Math.floor(endTime / 1000)}:R>.`
 
             let selectOptions = [];
             for (const option in options) {
@@ -164,6 +164,12 @@ module.exports = {
                 .setCustomId(`poll-options`)
                 .setPlaceholder('Select an option')
                 .addOptions(selectOptions);
+
+            if (multiple === true) {
+                optionSelect
+                    .setMinValues(1)
+                    .setMaxValues(options.length);
+            }
 
             const endPollButton = new ButtonBuilder()
                 .setCustomId(`poll-end`)
@@ -211,7 +217,7 @@ module.exports = {
 
             const timeMs = timeToMs(timed);
             const endTime = Date.now() + timeMs;
-            embed.description += `\n\nEnds in <t:${Math.floor(endTime / 1000)}:R>.`;
+            embed.description += `\n\nEnds <t:${Math.floor(endTime / 1000)}:R>.`;
 
             if (results === null || results === true) {
                 for (const option of options) {
