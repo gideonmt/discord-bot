@@ -121,7 +121,7 @@ async function getPolls() {
 	return polls;
 }
 
-async function pollVote(messageObject, user, option, client) {
+async function pollVote(messageObject, user, option) {
 	const Polls = require('./dbObjects').Polls;
 	await Polls.sync();
 
@@ -133,9 +133,18 @@ async function pollVote(messageObject, user, option, client) {
 
 	const optionObject = poll.options.find(opt => opt.option === option);
 
+	let totalVotes = poll.options.reduce((total, option) => total.concat(option.votes), []);
+
 	if (optionObject) {
-		if (optionObject.votes.some(vote => vote === user)) {
-			optionObject.votes = optionObject.votes.filter(vote => vote !== user);
+		if (totalVotes.includes(user)) {
+			if (optionObject.votes.some(vote => vote === user)) {
+				optionObject.votes = optionObject.votes.filter(vote => vote !== user);
+			} else {
+				for (const opt of poll.options) {
+					opt.votes = opt.votes.filter(vote => vote !== user);
+				}
+				optionObject.votes.push(user);
+			}
 		} else {
 			optionObject.votes.push(user);
 		}
@@ -145,8 +154,9 @@ async function pollVote(messageObject, user, option, client) {
 		);
 	}
 
-	const totalVotes = poll.options.reduce((acc, cur) => acc + cur.votes.length, 0);
-	const description = `${poll.options.map(opt => `${opt.option.charAt(0).toUpperCase() + opt.option.slice(1)}: ${opt.votes.length} votes (${Math.round(opt.votes.length / totalVotes * 100) || 0}%)`).join('\n')}\nTotal Votes: ${totalVotes}`;
+	totalVotes = poll.options.reduce((total, option) => total.concat(option.votes), []);
+
+	const description = `${poll.options.map(opt => `${opt.option.charAt(0).toUpperCase() + opt.option.slice(1)}: ${opt.votes.length} votes (${Math.round(opt.votes.length / totalVotes.length * 100) || 0}%)`).join('\n')}\nTotal Votes: ${totalVotes.length}`;
 
 	const embed = {
 		author: {
