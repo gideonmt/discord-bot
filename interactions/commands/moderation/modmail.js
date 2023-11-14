@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { getModmailBans, modmailBanAdd } = require('../../../functions/db/db');
+const { getModmailBans, modmailBanAdd } = require('../../../functions/modmail/bans');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -84,9 +84,8 @@ module.exports = {
             const guild = interaction.guild.id;
             const reason = interaction.options.getString('reason') || 'No reason provided.';
 
-            console.log(user, guild, reason)
-
             modmailBanAdd(user, guild, reason)
+
             return interaction.reply({ content: `You modmail banned: **${member.user.username}**`, ephemeral: true });
         }
     },

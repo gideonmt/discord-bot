@@ -180,7 +180,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const welcomeMessages = Array.from(welcomeMessagesList.children).map(li => li.textContent);
         const leaveMessages = Array.from(leaveMessagesList.children).map(li => li.textContent);
         const activityStatus = Array.from(activityStatusList.children).map(li => li.textContent);
-        console.log(activityStatus)
 
         const messageFunctions = Array.from(messageFunctionsList.children).map(li => {
             const trigger = li.querySelector('ul > li:first-child').textContent.replace('Trigger: ', '');
@@ -195,7 +194,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 actionObject[actionType] = actionValue;
                 return actionObject;
             });
-            console.log({ trigger, actions });
             return { trigger, actions };
         });
 
@@ -220,8 +218,6 @@ document.addEventListener('DOMContentLoaded', () => {
             activityStatusEnabled: activityStatusEnabled.checked,
             activityStatus: activityStatus,
         };
-
-        console.log(updatedSettings);
 
         fetch('/api/settings', {
             method: 'POST',

@@ -9,8 +9,6 @@ async function pollRankButton(interaction) {
 
     const options = interaction.message.embeds[0].description.split('\n').map(option => option.split(' ')[0]);
 
-    console.log(options);
-
     const rankInput = new TextInputBuilder()
         .setCustomId('rankInput')
         .setLabel("Your rank:")

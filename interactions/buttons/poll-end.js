@@ -1,5 +1,5 @@
 const { ActionRowBuilder } = require("discord.js");
-const { pollRemove } = require("../../functions/db/db");
+const { pollRemove } = require("../../functions/polls");
 
 module.exports = (interaction, client) => {
     const message = interaction.message.id;

@@ -20,12 +20,12 @@ setInterval(() => {
 	activityStatus(client);
 }, 10000);
 
-const { checkReminders } = require('./functions/db/db');
+const { checkReminders } = require('./functions/reminders');
 setInterval(() => {
 	checkReminders(client);
 }, 1000);
 
-const { checkPolls } = require('./functions/db/db');
+const { checkPolls } = require('./functions/polls');
 setInterval(() => {
 	checkPolls(client);
 }, 1000);

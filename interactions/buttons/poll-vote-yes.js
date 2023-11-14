@@ -1,4 +1,4 @@
-const { pollVote } = require("../../functions/db/db");
+const { pollVote } = require("../../functions/polls");
 
 module.exports = (interaction) => {
     const messageObject = interaction.message;

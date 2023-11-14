@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
 const { timeToMs } = require('../../../functions/timeToMs');
-const { pollAdd } = require('../../../functions/db/db');
+const { pollAdd } = require('../../../functions/polls');
 const { MessageManager } = require('discord.js');
 
 module.exports = {
@@ -55,7 +55,6 @@ module.exports = {
                 .addStringOption(option => option.setName('timed').setDescription('Set the poll duration, e.g., 1d or 1h (default = 7d).'))
         ),
     async execute(interaction) {
-        interaction.user.send({ content: ':warning: The poll command is currently in a WIP stage. Expect errors.' });
         const subcommand = interaction.options.getSubcommand();
         if (subcommand === 'normal') {
             const question = interaction.options.getString('question');

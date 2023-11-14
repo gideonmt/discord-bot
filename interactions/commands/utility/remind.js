@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { addReminder, removeReminder, getReminders } = require('../../../functions/db/db');
+const { addReminder, removeReminder, getReminders } = require('../../../functions/reminders');
 const { timeToMs } = require('../../../functions/timeToMs');
 
 module.exports = {
