@@ -4,10 +4,12 @@
 - Mod logs
 - Warn members
 - Polls
+    - ranked
+    - permissive (other)
+    - multiple
 - Custom Commands
     - open modal
     - buttons
     - select menus
     - reply
     - DM user
-    - 

@@ -12,6 +12,7 @@ module.exports = (client) => {
         if (interaction.isChatInputCommand()) { commands.handleChatInputCommand(interaction, client) }
         else if (interaction.isAutocomplete()) { autocomplete.handleAutocomplete(interaction, client) }
         else if (interaction.isButton()) { buttons.handleButtons(interaction, client) }
+        else if (interaction.isStringSelectMenu()) { buttons.handleSelectMenu(interaction, client) }
         else if (interaction.isModalSubmit()) { modals.handleModalSubmit(interaction, client) }
     });
 };

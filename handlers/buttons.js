@@ -40,5 +40,35 @@ module.exports = {
                 ephemeral: true,
             });
         }
+    },
+    handleSelectMenu: async (interaction, client) => {
+        const selectMenuId = interaction.customId;
+
+        const filePath = path.join(__dirname, '..', 'interactions', 'selectMenus', `${selectMenuId}.js`);
+
+        if (fs.existsSync(filePath)) {
+            try {
+                const selectMenuHandler = require(filePath);
+                if (typeof selectMenuHandler === 'function') {
+                    await selectMenuHandler(interaction, client);
+                } else {
+                    interaction.reply({
+                        content: `Invalid Select Menu command file. selectMenuId: ${selectMenuId}`,
+                        ephemeral: true,
+                    });
+                }
+            } catch (error) {
+                console.error(error);
+                interaction.reply({
+                    content: `Error executing the Select Menu command. selectMenuId: ${selectMenuId}`,
+                    ephemeral: true,
+                });
+            }
+        } else {
+            interaction.reply({
+                content: `Select Menu command not found. selectMenuId: ${selectMenuId}`,
+                ephemeral: true,
+            });
+        }
     }
 };
