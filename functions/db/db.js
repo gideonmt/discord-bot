@@ -121,9 +121,11 @@ async function getPolls() {
 	return polls;
 }
 
-async function pollVote(message, user, option) {
+async function pollVote(messageObject, user, option, client) {
 	const Polls = require('./dbObjects').Polls;
 	await Polls.sync();
+
+	const message = messageObject.id;
 
 	const poll = await Polls.findOne({ where: { message: message } });
 
@@ -142,6 +144,23 @@ async function pollVote(message, user, option) {
 			{ where: { message: message } }
 		);
 	}
+
+	const totalVotes = poll.options.reduce((acc, cur) => acc + cur.votes.length, 0);
+	const description = `${poll.options.map(opt => `${opt.option.charAt(0).toUpperCase() + opt.option.slice(1)}: ${opt.votes.length} votes (${Math.round(opt.votes.length / totalVotes * 100) || 0}%)`).join('\n')}\nTotal Votes: ${totalVotes}`;
+
+	const embed = {
+		author: {
+			name: messageObject.embeds[0].author.name,
+			icon_url: messageObject.embeds[0].author.iconURL,
+		},
+		title: messageObject.embeds[0].title,
+		description: description,
+		fields: messageObject.embeds[0].fields,
+	};
+
+	const components = messageObject.components;
+
+	messageObject.edit({ content: messageObject.content, embeds: [embed], components: components });
 
 	return pollVote;
 }

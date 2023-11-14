@@ -1,10 +1,10 @@
 const { pollVote } = require("../../functions/db/db");
 
-module.exports = (interaction) => {
-    const message = interaction.message.id;
+module.exports = (interaction, client) => {
+    const messageObject = interaction.message;
     const user = interaction.user.id;
     
-    pollVote(message, user, 'no');
+    pollVote(messageObject, user, 'no', client);
 
     interaction.reply({ content: `Vote recorded!`, ephemeral: true })
 }
