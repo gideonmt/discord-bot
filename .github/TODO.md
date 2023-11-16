@@ -7,10 +7,13 @@
         - amount of xp per minute in vc
         - level roles
         - xp booster roles
+        - level up messages
+        - level up channel
     - add xp on message create
     - add xp per minute in vc
     - xp boost roles
     - add level role to users
+    - level up messages
     - leaderboard command
     - xp command
         - set level
@@ -18,7 +21,6 @@
         - add xp
         - take away xp
 - Mod logs
-- Warn members
 - Polls
     - ranked
     - permissive (other)

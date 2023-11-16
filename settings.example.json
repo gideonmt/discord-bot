@@ -2,18 +2,18 @@
     "welcomeEnabled": true,
     "welcomeChannel": "1077305204363493416",
     "welcomeMessages": [
-        "{user} is here!",
-        "Welcome {user}!",
-        "{user} joined. We are happy to have you!",
-        "Welcome {user}. We're excited to have you."
+        "{user.mention} is here!",
+        "Welcome {user.mention}!",
+        "{user.mention} joined. We are happy to have you!",
+        "Welcome {user.mention}. We're excited to have you."
     ],
     "newMemberRoleEnabled": true,
     "newMemberRoleId": "1166835332633870516",
     "leaveEnabled": true,
     "leaveChannel": "1077305204363493416",
     "leaveMessages": [
-        "{user} left.",
-        "Bye {user}."
+        "{user.username} left.",
+        "Bye {user.username}."
     ],
     "messageFunctionsEnabled": true,
     "messageFunctions": [
@@ -48,5 +48,10 @@
     "starboardReactions": 5,
     "modmailEnabled": true,
     "pingId": "969683714302939206",
-    "pingFor": "timed"
+    "pingFor": "timed",
+    "activityStatusEnabled": true,
+    "activityStatus": [
+        "WATCHING: over this server.",
+        "LISTENING: for /help"
+    ]
 }

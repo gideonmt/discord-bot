@@ -33,8 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // modmail
     const modmailEnabled = document.getElementById('modmail-enabled');
-    const autoResponseTextarea = document.getElementById('auto-response');
-    const autoReactionInput = document.getElementById('auto-reaction');
     const pingId = document.getElementById('ping-id');
     const pingFor = document.getElementById('ping-for');
 
@@ -91,11 +89,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const listItem = document.createElement('li');
             listItem.textContent = selectedAction;
             if (selectedAction === 'reply') {
+                listItem.classList.add('reply');
                 document.getElementById('reply-message-div').style.display = 'block';
                 replyTextInput.value = '';
                 listItem.textContent += `: ${replyTextInput.value}`;
                 replyTextInput.value = '';
             } else if (selectedAction === 'react') {
+                listItem.classList.add('react');
                 document.getElementById('react-emoji-div').style.display = 'block';
                 reactTextInput.value = '';
                 listItem.textContent += `: ${reactTextInput.value}`;
@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // reply text input
     const replyTextInput = document.getElementById('reply-text-input');
     replyTextInput.addEventListener('input', () => {
-        const replyMessageListItem = messageActionsList.querySelector('li:first-child');
+        const replyMessageListItem = messageActionsList.querySelector('li.reply');
         if (replyMessageListItem) {
             replyMessageListItem.textContent = `reply: ${replyTextInput.value}`;
         }
@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // react text input
     const reactTextInput = document.getElementById('react-text-input');
     reactTextInput.addEventListener('input', () => {
-        const reactMessageListItem = messageActionsList.querySelector('li:first-child');
+        const reactMessageListItem = messageActionsList.querySelector('li.react');
         if (reactMessageListItem) {
             reactMessageListItem.textContent = `react: ${reactTextInput.value}`;
         }
@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    // activity status
+    // Activity Status
     addActivityStatusButton.addEventListener('click', () => {
         const newActivityStatus = `${activityStatusType.value}: ${activityStatusText.value}`;
         if (newActivityStatus && activityStatusType.value && activityStatusText.value) {
@@ -174,6 +174,76 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    fetch('/api/settings')
+        .then(response => response.json())
+        .then(existingSettings => {
+            console.log(existingSettings);
+            // Welcome Message
+            welcomeEnabled.checked = existingSettings.welcomeEnabled;
+            welcomeChannelInput.value = existingSettings.welcomeChannel;
+
+            existingSettings.welcomeMessages.forEach(message => {
+                const listItem = document.createElement('li');
+                listItem.textContent = message;
+                welcomeMessagesList.appendChild(listItem);
+            });
+
+            // New member role
+            newMemberRoleEnabled.checked = existingSettings.newMemberRoleEnabled;
+            newMemberRoleId.value = existingSettings.newMemberRoleId;
+
+            // Leave Message
+            leaveEnabled.checked = existingSettings.leaveEnabled;
+            leaveChannelInput.value = existingSettings.leaveChannel;
+
+            existingSettings.leaveMessages.forEach(message => {
+                const listItem = document.createElement('li');
+                listItem.textContent = message;
+                leaveMessagesList.appendChild(listItem);
+            });
+
+            // For message functions
+            messageFunctionsEnabled.checked = existingSettings.messageFunctionsEnabled;
+            existingSettings.messageFunctions.forEach(messageFunction => {
+                const listItem = document.createElement('li');
+                const messageList = document.createElement('ul');
+                const triggerMessageListItem = document.createElement('li');
+                const actionsListItem = document.createElement('li');
+                const actionsList = document.createElement('ul');
+                listItem.appendChild(messageList);
+                messageList.appendChild(triggerMessageListItem);
+                triggerMessageListItem.textContent = `Trigger: ${messageFunction.trigger}`;
+                messageList.appendChild(actionsListItem);
+                actionsListItem.textContent = 'Actions: ';
+                actionsListItem.appendChild(actionsList);
+                messageFunction.actions.forEach(action => {
+                    const actionListItem = document.createElement('li');
+                    actionListItem.textContent = Object.entries(action).map(([key, value]) => `${key}: ${value}`).join(', ');
+                    actionsList.appendChild(actionListItem);
+                });
+                messageFunctionsList.appendChild(listItem);
+            });
+
+            // Starboard
+            starboardEnabled.checked = existingSettings.starboardEnabled;
+            starboardChannelInput.value = existingSettings.starboardChannel;
+            starboardEmojisInput.value = existingSettings.starboardEmojis;
+            starboardReactionsInput.value = existingSettings.starboardReactions;
+
+            // Modmail
+            modmailEnabled.checked = existingSettings.modmailEnabled;
+            pingId.value = existingSettings.pingId;
+            pingFor.value = existingSettings.pingFor;
+
+            // Activity Status
+            activityStatusEnabled.checked = existingSettings.activityStatusEnabled;
+            existingSettings.activityStatus.forEach(status => {
+                const listItem = document.createElement('li');
+                listItem.textContent = status;
+                activityStatusList.appendChild(listItem);
+            });
+        });
+
     settingsForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
@@ -187,13 +257,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const actionText = action.textContent;
                 const actionType = actionText.split(':')[0];
                 if (actionType === 'Trigger' || actionType === 'Actions') {
-                    return;
+                    return null;
                 }
                 const actionValue = actionText.split(':')[1].trim();
                 const actionObject = {};
                 actionObject[actionType] = actionValue;
                 return actionObject;
-            });
+            }).filter(action => action !== null);
             return { trigger, actions };
         });
 
@@ -229,6 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => response.json())
             .then(data => {
                 console.log(data);
+                console.log(updatedSettings)
             });
     });
 });
