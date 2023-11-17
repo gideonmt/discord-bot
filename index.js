@@ -6,6 +6,12 @@ const client = new Client({
 	partials: [Partials.Message, Partials.Channel, Partials.Reaction],
 });
 
+// ------------ INFO MESSAGE ------------
+// Delete this section to disable the info message on boot
+const infoMessage = require('./functions/infoMessage');
+infoMessage();
+// --------------------------------------
+
 const handlers = require('./handlers/index');
 handlers(client);
 

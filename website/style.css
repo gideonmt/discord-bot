@@ -22,7 +22,13 @@ body {
 
 header {
     padding: 20px;
-    margin-bottom: 20px;
+}
+
+header>nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
 
 main {
@@ -33,7 +39,7 @@ main {
     margin: 0 auto;
 }
 
-nav {
+main>nav {
     width: 20vw;
     position: -webkit-sticky;
     position: sticky;
@@ -42,7 +48,7 @@ nav {
     height: min-content;
 }
 
-nav ul {
+main>nav ul {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -51,7 +57,7 @@ nav ul {
     margin-top: 20px;
 }
 
-nav a {
+main>nav a {
     background-color: var(--background-secondary);
     padding: 10px;
     margin-bottom: 10px;
@@ -59,10 +65,12 @@ nav a {
     color: var(--text);
     border-radius: 5px;
     display: block;
+    transition: all 0.2s ease-in-out;
 }
 
-nav a:hover {
+main>nav a:hover {
     background-color: var(--accent);
+    outline: solid 2px var(--text-bright);
 }
 
 h1 {
@@ -95,7 +103,8 @@ form {
     box-shadow: 0px 0px 10px var(--shadow);
 }
 
-#settings-form>div:first-child {
+#settings-form>div:first-child,
+form>div>div>ul>li:first-child {
     margin-top: 0;
 }
 
@@ -144,11 +153,23 @@ form ul {
     list-style: none;
     padding: 0;
     margin: 0;
-    
+}
+
+form>div>div>ul>li>ul {
+    padding: 0 10px;
+    border: 1px solid var(--text-muted);
 }
 
 form ul li {
     padding: 4px 0;
+    margin: 10px 0 0 0;
+}
+
+
+form>div>div>ul:has(li) {
+    background-color: var(--background-tertiary);
+    padding: 10px;
+    border-radius: 5px;
     margin: 10px 0;
 }
 
