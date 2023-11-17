@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <title>Discord Bot Docs</title>
+</head>
+
+<body>
+    <header>
+        <h1>Discord Bot Docs</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/docs">Documentation</a></li>
+                <li><a href="/docs#features">Features</a></li>
+                <li><a href="/settings">Configure</a></li>
+                <li><a href="https://github.com/gideonmt/discord-bot/">GitHub Repo</a></li>
+            </ul>
+        </nav>
+    </header>
+    <hr style="border: 1px solid var(--text-bright);margin: 0;">
+    <main>
+        <nav>
+            <ul>
+                <li><a href="#introduction">Introduction</a></li>
+                <ul>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#features">Features</a></li>
+                </ul>
+                <li><a href="#installation">Installation</a></li>
+                <ul>
+                    <li><a href="#prerequisites">Prerequisites</a></li>
+                    <li><a href="#bot-setup">Bot Setup</a></li>
+                    <li><a href="#deploy-run">Deploy and Run</a></li>
+                    <li><a href="#invite-bot">Invite the Bot</a></li>
+                </ul>
+                <li><a href="#configuration">Configuration</a></li>
+                <ul>
+                    <li><a href="#configuring-the-bot">Configuring the Bot</a></li>
+                    <li><a href="#configuring-the-database">Configuring the Database</a></li>
+                </ul>
+                <li><a href="#contributing">Contributing</a></li>
+            </ul>
+        </nav>
+        <div class="y-line"></div>
+        <div class="docs">
+            <section id="introduction">
+                <h2>Introduction</h2>
+
+                <section id="about">
+                    <h3>About</h3>
+                    <p>This is a general purpose Discord bot designed for all types of communities.</p>
+                </section>
+
+                <section id="features">
+                    <h3>Features</h3>
+                    <section id="slash-commands">
+                        <h4>Slash Commands</h4>
+                        <ul>
+                            <li>
+                                <strong class="command-toggle" onclick="toggleCommandDetails(this)">apod</strong>
+                                <div class="command-details">
+                                    <p>Sends the Astronomy Picture of the Day.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <strong class="command-toggle" onclick="toggleCommandDetails(this)">dadjoke</strong>
+                                <div class="command-details">
+                                    <p>Sends a random dad joke.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <strong class="command-toggle" onclick="toggleCommandDetails(this)">numberfact</strong>
+                                <div class="command-details">
+                                    <p>Get a random fact about a number.</p>
+                                    <p><em>Parameters:</em> number - The number to get a fact about.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <strong class="command-toggle" onclick="toggleCommandDetails(this)">poll</strong>
+                                <div class="command-details">
+                                    <p>Create a poll.</p>
+                                    <p><em>Parameters:</em> normal - Create a normal yes or no poll.<br>straw - Create a
+                                        strawpoll.<br>ranked - Create a ranked poll.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <strong class="command-toggle" onclick="toggleCommandDetails(this)">qrcode</strong>
+                                <div class="command-details">
+                                    <p>Generates a QR code from the given data.</p>
+                                    <p><em>Parameters:</em> data - The data to convert to a QR code.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <strong class="command-toggle"
+                                    onclick="toggleCommandDetails(this)">thispersondoesnotexist</strong>
+                                <div class="command-details">
+                                    <p>Sends a random image of a person that does not exist.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <strong class="command-toggle" onclick="toggleCommandDetails(this)">botinfo</strong>
+                                <div class="command-details">
+                                    <p>Provides detailed information about the bot.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <strong class="command-toggle" onclick="toggleCommandDetails(this)">help</strong>
+                                <div class="command-details">
+                                    <p>Get a list of all commands.</p>
+                                    <p><em>Parameters:</em> command - The command to get information on.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <strong class="command-toggle" onclick="toggleCommandDetails(this)">ban</strong>
+                                <div class="command-details">
+                                    <p>Manage guild bans.</p>
+                                    <p><em>Parameters:</em> add - Ban a member.<br>remove - Unban a member.<br>list -
+                                        List banned members.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <strong class="command-toggle" onclick="toggleCommandDetails(this)">clear</strong>
+                                <div class="command-details">
+                                    <p>Clear up to 99 messages.</p>
+                                    <p><em>Parameters:</em> amount - Number of messages to clear.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <strong class="command-toggle" onclick="toggleCommandDetails(this)">kick</strong>
+                                <div class="command-details">
+                                    <p>Kick a member.</p>
+                                    <p><em>Parameters:</em> target - The member to kick.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <strong class="command-toggle" onclick="toggleCommandDetails(this)">modmail</strong>
+                                <div class="command-details">
+                                    <p>Ban a member from using modmail.</p>
+                                    <p><em>Parameters:</em> ban-add - Ban a member from using modmail.<br>ban-remove -
+                                        Unban a member from using modmail.<br>ban-list - List members banned from using
+                                        modmail.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <strong class="command-toggle" onclick="toggleCommandDetails(this)">timeout</strong>
+                                <div class="command-details">
+                                    <p>Timeout a member.</p>
+                                    <p><em>Parameters:</em> target - The member to kick.<br>time - The time to timeout
+                                        the member for. Number than units.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <strong class="command-toggle" onclick="toggleCommandDetails(this)">warn</strong>
+                                <div class="command-details">
+                                    <p>Manage warns.</p>
+                                    <p><em>Parameters:</em> add - Warn a member.<br>remove - Remove a warn.<br>list -
+                                        List warnings.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <strong class="command-toggle" onclick="toggleCommandDetails(this)">avatar</strong>
+                                <div class="command-details">
+                                    <p>Get the avatar URL of the selected user, or your own avatar.</p>
+                                    <p><em>Parameters:</em> target - The user's avatar to show.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <strong class="command-toggle" onclick="toggleCommandDetails(this)">remind</strong>
+                                <div class="command-details">
+                                    <p>Reminds you about something.</p>
+                                    <p><em>Parameters:</em> list - Lists your reminders.<br>remove - Removes a
+                                        reminder.<br>add - Adds a reminder.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <strong class="command-toggle" onclick="toggleCommandDetails(this)">serverinfo</strong>
+                                <div class="command-details">
+                                    <p>Display information about this server.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <strong class="command-toggle" onclick="toggleCommandDetails(this)">userinfo</strong>
+                                <div class="command-details">
+                                    <p>Provides information about the user.</p>
+                                    <p><em>Parameters:</em> target - The member you want to get information about.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </section>
+
+                </section>
+
+            </section>
+
+            <section id="installation">
+                <h2>Installation</h2>
+
+                <section id="prerequisites">
+                    <h3>1. Prerequisites</h3>
+                    <ul>
+                        <li>
+                            <p>Ensure you have <a href="https://nodejs.org/">Node.js</a> installed on your system.</p>
+                        </li>
+                        <li>
+                            <p>Make sure to use <a href="https://pnpm.io/">pnpm</a> as the package manager.</p>
+                        </li>
+                    </ul>
+                </section>
+
+                <section id="bot-setup">
+                    <h3>2. Bot Setup</h3>
+                    <ol>
+                        <li>
+                            <p>Clone this repository to your local machine or download it as a ZIP archive.</p>
+                        </li>
+                        <li>
+                            <p>Create a <code>.env</code> file in the project directory. You can use the provided
+                                <code>.env.example</code> as a template. Fill in your bot's token and ID.
+                            </p>
+                            <pre>TOKEN=YOU_BOT_TOKEN
+CLIENT_ID=YOU_CLIENT_ID
+# API KEYS
+NASA_API_KEY=YOUR_NASA_API_KEY # Create one at https://api.nasa.gov/ or leave blank to use the demo key.</pre>
+                        </li>
+                        <li>
+                            <p>Install the required dependencies by running the following command in your terminal:</p>
+                            <pre>pnpm install</pre>
+                        </li>
+                        <li>Initialize the Database
+                            <pre>node functions/db/init.js</pre>
+                            <p>This script will set up the necessary database tables. If you ever make changes to
+                                the
+                                database models, you can use the <code>--force</code> or <code>-f</code> option to
+                                force
+                                synchronization of the tables. Be cautious when using this option as it will empty
+                                and
+                                recreate the model tables. This will delete all the data you previously had stored.
+                            </p>
+                        </li>
+                    </ol>
+                </section>
+
+                <section id="deploy-run">
+                    <h3>3. Deploy and Run</h3>
+                    <ul>
+                        <li>
+                            <p>To deploy or reset the bot's commands, run the following command:</p>
+                            <pre>node deploy-commands.js</pre>
+                        </li>
+                        <li>
+                            <p>To start the bot, run:</p>
+                            <pre>node index.js</pre>
+                        </li>
+                    </ul>
+                </section>
+
+                <section id="invite-bot">
+                    <h3>4. Invite the Bot to Your Server</h3>
+
+                    <section id="create-bot-application">
+                        <h4>Creating a Discord Bot Application</h4>
+                        <ol>
+                            <li>Visit the <a href="https://discord.com/developers/applications">Discord Developer
+                                    Portal</a>.</li>
+                            <li>
+                                <p>Click on the "New Application" button.</p>
+                            </li>
+                            <li>
+                                <p>Give your application a name.</p>
+                            </li>
+                            <li>
+                                <p>Navigate to the "Bot" section in the left sidebar.</p>
+                            </li>
+                            <li>
+                                <p>Scroll down to the "Privileged Gateway Intents" section.</p>
+                            </li>
+                            <li>
+                                <p>Enable all the intents under this section. These intents are required for various
+                                    features of the bot. To enable these intents, simply toggle the switches to the "ON"
+                                    position.</p>
+                            </li>
+                            <li>
+                                <p>Save your changes.</p>
+                            </li>
+                        </ol>
+                    </section>
+
+                    <section id="invite-bot-link">
+                        <h4>Inviting the Bot</h4>
+                        <p>Invite the bot to your server by using the following link, replacing
+                            <code>&lt;YOUR_CLIENT_ID&gt;</code> with your bot's client ID:
+                        </p>
+                        <pre>https://discord.com/api/oauth2/authorize?client_id=&lt;YOUR_CLIENT_ID&gt;&permissions=8&scope=bot%20applications.commands</pre>
+                        <p>Once the bot is in your server, you can start using its features and commands.</p>
+                    </section>
+
+                </section>
+
+            </section>
+
+            <section id="configuration">
+                <h2>Configuration</h2>
+                <p>Configure the bot on the <a href="/settings">settings page</a>. Enable or disable features using the
+                    checkboxes next to each feature. Lack of necessary information will disable a feature. Note that
+                    improper configuration may break the bot, e.g., using non-existent emojis in the Starboard Emojis
+                    section.</p>
+                <section id="replacements">
+                    <h3>Replacements</h3>
+                    <p>For the text inputs that control messages the bot will send, you can use the following
+                        replacements.</p>
+                    <table>
+                        <tr>
+                            <th>Text to Type</th>
+                            <th>Replaced with</th>
+                            <th>Features</th>
+                        </tr>
+                        <tr>
+                            <td>{client.mention}</td>
+                            <td>Mentions the bot</td>
+                            <td>All</td>
+                        </tr>
+                        <tr>
+                            <td>{client.username}</td>
+                            <td>Bot's username</td>
+                            <td>All</td>
+                        </tr>
+                        <tr>
+                            <td>{client.id}</td>
+                            <td>Bot's user ID</td>
+                            <td>All</td>
+                        </tr>
+                        <tr>
+                            <td>{client.tag}</td>
+                            <td>Bot's tag (username#discriminator)</td>
+                            <td>All</td>
+                        </tr>
+                        <tr>
+                            <td>{user.mention}</td>
+                            <td>Mentions the user that the feature is related to.</td>
+                            <td>Welcome Message, Leave Message, Message Functions</td>
+                        </tr>
+                        <tr>
+                            <td>{user.username}</td>
+                            <td>The username of the user that the feature is related to.</td>
+                            <td>Welcome Message, Leave Message, Message Functions</td>
+                        </tr>
+                        <tr>
+                            <td>{user.id}</td>
+                            <td>The ID of the user that the feature is related to.</td>
+                            <td>Welcome Message, Leave Message, Message Functions</td>
+                        </tr>
+                        <tr>
+                            <td>{user.tag}</td>
+                            <td>The tag (username#discriminator) of the user that the feature is related to.</td>
+                            <td>Welcome Message, Leave Message, Message Functions</td>
+                        </tr>
+                        <tr>
+                            <td>{channel.mention}</td>
+                            <td>Mentions the channel the feature is related to.</td>
+                            <td>Message Functions</td>
+                        </tr>
+                        <tr>
+                            <td>{channel.name}</td>
+                            <td>The channel's name the feature is related to.</td>
+                            <td>Message Functions</td>
+                        </tr>
+                        <tr>
+                            <td>{channel.id}</td>
+                            <td>The channel's ID the feature is related to.</td>
+                            <td>Message Functions</td>
+                        </tr>
+                        <tr>
+                            <td>{channel.topic}</td>
+                            <td>Channel's topic the feature is related to.</td>
+                            <td>Message Functions</td>
+                        </tr>
+                        <tr>
+                            <td>{guild.name}</td>
+                            <td>Server (guild) name</td>
+                            <td>Welcome Message, Leave Message, Message Functions</td>
+                        </tr>
+                        <tr>
+                            <td>{guild.id}</td>
+                            <td>Server (guild) ID</td>
+                            <td>Welcome Message, Leave Message, Message Functions</td>
+                        </tr>
+                        <tr>
+                            <td>{guild.memberCount}</td>
+                            <td>Member count in the server</td>
+                            <td>Welcome Message, Leave Message, Message Functions</td>
+                        </tr>
+                        <tr>
+                            <td>{message.content}</td>
+                            <td>Content of the user's message</td>
+                            <td>Message Functions</td>
+                        </tr>
+                        <tr>
+                            <td>{message.id}</td>
+                            <td>ID of the user's message</td>
+                            <td>Message Functions</td>
+                        </tr>
+                    </table>
+                </section>
+            </section>
+
+            <section id="contributing">
+                <h2>Contributing</h2>
+                <p>This Discord bot is a work in progress. Pull requests and issues are very appreciated.</p>
+            </section>
+        </div>
+    </main>
+    <script>
+        function toggleCommandDetails(commandElement) {
+            var listItem = commandElement.parentElement;
+            var detailsDiv = listItem.querySelector('.command-details');
+            detailsDiv.style.display = detailsDiv.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+</body>
+
+</html>

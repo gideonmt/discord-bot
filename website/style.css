@@ -1,7 +1,7 @@
 :root {
     --background-primary: #080808;
-    --background-secondary: #111;
-    --background-tertiary: #191919;
+    --background-secondary: #161616;
+    --background-tertiary: #202020;
     --text-bright: #f2f2f2;
     --text-normal: #dedede;
     --text-muted: #999;
@@ -20,15 +20,35 @@ body {
     flex-direction: column;
 }
 
+a {
+    color: var(--accent);
+    text-decoration: underline;
+}
+
+a:visited {
+    color: var(--accent);
+}
+
 header {
-    padding: 20px;
+    max-width: 95vw;
+    margin: 20px auto;
 }
 
 header>nav {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    margin: 0 auto;
+    width: 95vw;
+}
+
+header>nav>ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
 }
 
 main {
@@ -57,20 +77,37 @@ main>nav ul {
     margin-top: 20px;
 }
 
+main>nav>ul>li {
+    font-weight: 600;
+}
+
+main>nav>ul ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    font-weight: 400;
+}
+
 main>nav a {
-    background-color: var(--background-secondary);
-    padding: 10px;
+    color: var(--text-normal);
+    padding: 4px;
     margin-bottom: 10px;
     text-decoration: none;
     color: var(--text);
     border-radius: 5px;
     display: block;
-    transition: all 0.2s ease-in-out;
+    transition: all 100ms;
+}
+
+main>nav a:visited {
+    color: var(--text-normal);
 }
 
 main>nav a:hover {
-    background-color: var(--accent);
-    outline: solid 2px var(--text-bright);
+    color: var(--text-bright);
 }
 
 h1 {
@@ -203,4 +240,52 @@ hr {
 .row select, .row input[type="text"] {
     margin-top: 10px;
     padding: 10px;
+}
+
+div.docs {
+    background-color: var(--background-secondary);
+    margin: 20px auto;
+    padding: 0 20px;
+    border-radius: 5px;
+    width: 70vw;
+    max-width: 768px;
+}
+
+div.docs code,
+div.docs pre {
+    background-color: var(--background-tertiary);
+    padding: 10px;
+    border-radius: 5px;
+    display: block;
+    margin: 10px 0;
+    overflow-x: scroll;
+}
+
+div.docs code {
+    display: unset;
+    padding: 1px;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+table>tbody>tr>td,
+table>tbody>tr>th {
+    padding: 10px;
+    border: 1px solid var(--text-muted);
+    margin: 0;
+}
+
+.command-details {
+    display: none;
+}
+
+.command-toggle {
+    cursor: pointer;
+}
+
+section#slash-commands>ul>li {
+    margin: 10px 0;
 }
