@@ -31,3 +31,8 @@
     - select menus
     - reply
     - DM user
+- Website improvements 
+    - remove button in lists
+    - nav
+    - better layout
+    - extra info about settings

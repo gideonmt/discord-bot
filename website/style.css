@@ -1,17 +1,68 @@
 :root {
-    --background: #222;
-    --background-light: #333;
-    --text: #f3f3f3;
-    --highlight: #5485ff;
-    --highlight-hover: #557fe1;
+    --background-primary: #080808;
+    --background-secondary: #111;
+    --background-tertiary: #191919;
+    --text-bright: #f2f2f2;
+    --text-normal: #dedede;
+    --text-muted: #999;
+    --accent: #5485ff;
+    --accent-hover: #557fe1;
+    --shadow: rgba(0, 0, 0, 0.2);
 }
 
 body {
     font-family: Arial, sans-serif;
-    margin: 0;
+    margin: 0 auto;
     padding: 0;
-    background-color: var(--background);
+    background-color: var(--background-primary);
+    color: var(--text-bright);
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+main {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    max-width: 95vw;
+    margin: 0 auto;
+}
+
+nav {
+    width: 20vw;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    background-color: var(--background-primary);
+    height: min-content;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+nav a {
+    background-color: var(--background-secondary);
+    padding: 10px;
+    margin-bottom: 10px;
+    text-decoration: none;
     color: var(--text);
+    border-radius: 5px;
+    display: block;
+}
+
+nav a:hover {
+    background-color: var(--accent);
 }
 
 h1 {
@@ -20,13 +71,32 @@ h1 {
     margin: 0;
 }
 
+.y-line {
+    content: '';
+    width: 2px;
+    background-color: var(--text-bright);
+    height: 100vh;
+    position: sticky;
+    bottom: 0;
+    top: 0;
+    margin: 0 20px;
+}
+
+form {
+    width: 70vw;
+    margin-top: 20px;
+}
+
 #settings-form>div {
-    max-width: 600px;
     margin: 20px auto;
-    background-color: var(--background-light);
+    background-color: var(--background-secondary);
     padding: 20px;
     border-radius: 5px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 0px 10px var(--shadow);
+}
+
+#settings-form>div:first-child {
+    margin-top: 0;
 }
 
 .setting-section {
@@ -42,19 +112,19 @@ textarea {
     width: calc(100% - 20px);
     padding: 10px;
     margin-top: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--text-muted);
     border-radius: 5px;
 }
 
 .setting-info {
     font-size: 14px;
-    color: var(--text);
+    color: var(--text-normal);
     margin-top: 5px;
 }
 
 button {
-    background-color: var(--highlight);
-    color: var(--text);
+    background-color: var(--accent);
+    color: var(--text-bright);
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
@@ -67,21 +137,19 @@ button[type="submit"], button#add-message-function{
 }
 
 button:hover {
-    background-color: var(--highlight-hover);
+    background-color: var(--accent-hover);
 }
 
-ul {
+form ul {
     list-style: none;
     padding: 0;
     margin: 0;
+    
 }
 
-ul li {
-    background-color: var(--background-light);
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+form ul li {
+    padding: 4px 0;
+    margin: 10px 0;
 }
 
 .setting-section>div:not(.title) {
