@@ -34,25 +34,27 @@ module.exports = async (modmailChannel, message, client) => {
 
     if (pingFor === 'all') {
         content = `<@&${pingId}> ${content}`;
-    } else if (pingFor === 'new' && !thread || thread.archived === true) {
+    } else if (pingFor === 'new' && (!thread || thread.archived === true)) {
         content = `<@&${pingId}> ${content}`;
     } else if (pingFor === 'none') {
         content = content;
-    } else if (pingFor === 'timed' && !thread || thread.archived === true) {
+    } else if (pingFor === 'timed' && (!thread || thread.archived === true)) {
         content = `<@&${pingId}> ${content}`;
-    } else if (pingFor === 'timed' && thread || thread.archived === false) {
-        const messages = await thread.messages.fetch({ limit: 100 });
+    } else if (pingFor === 'timed' && (thread && thread.archived === false)) {
+        const messages = await (thread ? thread.messages.fetch({ limit: 100 }) : []);
         const lastMessage = messages.first();
-        const lastMessageTime = lastMessage.createdAt.getTime();
-        const currentTime = Date.now();
-        const timeDifference = currentTime - lastMessageTime;
-        const timeDifferenceMinutes = timeDifference / 60000;
-        if (timeDifferenceMinutes < 5 && lastMessage.author === client.user) {
-            content = `<@&${pingId}> ${content}`;
-        } else {
-            content = content;
+        if (lastMessage) {
+            const lastMessageTime = lastMessage.createdAt.getTime();
+            const currentTime = Date.now();
+            const timeDifference = currentTime - lastMessageTime;
+            const timeDifferenceMinutes = timeDifference / 60000;
+            if (timeDifferenceMinutes < 5 && lastMessage.author === client.user) {
+                content = `<@&${pingId}> ${content}`;
+            }
         }
-    }
+    } else {
+        content = content;
+    }    
 
     // button
     const replyButton = new ButtonBuilder()

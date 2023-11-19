@@ -32,8 +32,7 @@
     - reply
     - DM user
 - Website improvements 
-    - extra info about settings
-    - homepage
     - docs
-        - rest of the features
-        - how to configure
+        - make how to configure better
+    - settings
+        - add remove button to lists
