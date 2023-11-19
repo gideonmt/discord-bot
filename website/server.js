@@ -1,3 +1,17 @@
+function startServer(app, port) {
+    app.listen(port, () => {
+        console.log(`Server is running on port ${port}`);
+    }).on('error', (err) => {
+        if (err.code === 'EADDRINUSE') {
+            console.log(`Port ${port} is already in use. Trying the next available port...`);
+            port++;
+            startServer();
+        } else {
+            console.error(err);
+        }
+    });
+}
+
 module.exports = () => {
     const fs = require('fs');
     const express = require('express');
@@ -10,21 +24,7 @@ module.exports = () => {
     app.use(express.static(__dirname));
     app.use(bodyParser.json());
 
-    const startServer = () => {
-        app.listen(port, () => {
-            console.log(`Server is running on port ${port}`);
-        }).on('error', (err) => {
-            if (err.code === 'EADDRINUSE') {
-                console.log(`Port ${port} is already in use. Trying the next available port...`);
-                port++;
-                startServer();
-            } else {
-                console.error(err);
-            }
-        });
-    };
-
-    startServer();
+    startServer(app, port);
 
     app.get('/api/settings', (req, res) => {
         const data = fs.readFileSync('settings.json');
