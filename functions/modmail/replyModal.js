@@ -22,5 +22,6 @@ module.exports = async (interaction) => {
     const dmChannel = await user.createDM();
     await dmChannel.send({ content: "Moderator Reply!", embeds: [embed] });
 
+    await interaction.channel.send({ content: `Replying to ${user.tag}`, embeds: [embed] })
     await interaction.reply({ content: `Replying to ${user.tag} with message ${replyMessage}`, ephemeral: true })
 }
