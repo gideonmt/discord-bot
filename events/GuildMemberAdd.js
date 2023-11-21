@@ -1,12 +1,3 @@
-const fs = require('fs');
-const settingsData = fs.readFileSync('settings.json', 'utf8');
-const settings = JSON.parse(settingsData);
-const welcomeEnabled = settings.welcomeEnabled;
-const channel = settings.welcomeChannel;
-const welcomeMessages = settings.welcomeMessages;
-const newMemberRoleEnabled = settings.newMemberRoleEnabled;
-const newMemberRoleId = settings.newMemberRoleId;
-
 function randomIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
@@ -33,6 +24,14 @@ function replace(welcomeMessages, newMember, guild, client) {
 
 module.exports = {
     handleMemberJoin: function (member, client) {
+        const config = require('../config/config');
+        const settings = config(member.guild.id);
+        const welcomeEnabled = settings.welcomeEnabled;
+        const channel = settings.welcomeChannel;
+        const welcomeMessages = settings.welcomeMessages;
+        const newMemberRoleEnabled = settings.newMemberRoleEnabled;
+        const newMemberRoleId = settings.newMemberRoleId;
+
         if (newMemberRoleEnabled && newMemberRoleId) {
             let welcomeRole = member.guild.roles.cache.get(newMemberRoleId);
 

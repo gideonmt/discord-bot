@@ -1,16 +1,16 @@
 {
-    "welcomeEnabled": true,
-    "welcomeChannel": "1077305204363493416",
+    "welcomeEnabled": false,
+    "welcomeChannel": "",
     "welcomeMessages": [
         "{user.mention} is here!",
         "Welcome {user.mention}!",
         "{user.mention} joined. We are happy to have you!",
         "Welcome {user.mention}. We're excited to have you."
     ],
-    "newMemberRoleEnabled": true,
-    "newMemberRoleId": "1166835332633870516",
-    "leaveEnabled": true,
-    "leaveChannel": "1077305204363493416",
+    "newMemberRoleEnabled": false,
+    "newMemberRoleId": "",
+    "leaveEnabled": false,
+    "leaveChannel": "",
     "leaveMessages": [
         "{user.username} left.",
         "Bye {user.username}."
@@ -42,14 +42,14 @@
             ]
         }
     ],
-    "starboardEnabled": true,
-    "starboardChannel": "1077305204363493416",
+    "starboardEnabled": false,
+    "starboardChannel": "",
     "starboardEmojis": "⭐️, 🔥, ❤️",
     "starboardReactions": 5,
-    "modmailEnabled": true,
-    "pingId": "969683714302939206",
+    "modmailEnabled": false,
+    "pingId": "",
     "pingFor": "timed",
-    "activityStatusEnabled": true,
+    "activityStatusEnabled": false,
     "activityStatus": [
         "WATCHING: over this server.",
         "LISTENING: for /help"

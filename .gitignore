@@ -3,3 +3,6 @@
 pnpm-lock.yaml
 /data
 .DS_Store
+/config/*.json
+!/config/settings.json
+!/config/settings.example.json

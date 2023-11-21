@@ -1,10 +1,3 @@
-const fs = require('fs');
-const settingsData = fs.readFileSync('settings.json', 'utf8');
-const settings = JSON.parse(settingsData);
-const leaveEnabled = settings.leaveEnabled;
-const channel = settings.leaveChannel;
-const leaveMessages = settings.leaveMessages;
-
 function randomIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
@@ -31,6 +24,11 @@ function replace(leaveMessages, oldMember, guild, client) {
 
 module.exports = {
     handleMemberLeave: function (member, client) {
+        const config = require('../config/config');
+        const settings = config(member.guild.id);
+        const leaveEnabled = settings.leaveEnabled;
+        const channel = settings.leaveChannel;
+        const leaveMessages = settings.leaveMessages;
         if (leaveEnabled && channel && leaveMessages) {
             let oldMember = member.user;
             let guild = member.guild;

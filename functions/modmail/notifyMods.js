@@ -1,9 +1,10 @@
 const { ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
-const settings = require('../../settings.json');
-const pingFor = settings.pingFor;
-const pingId = settings.pingId;
 
 module.exports = async (modmailChannel, message, client) => {
+    const config = require('../../config/config');
+    const settings = config(message.guild.id);
+    const pingFor = settings.pingFor;
+    const pingId = settings.pingId;
     const threads = modmailChannel.threads.cache.filter(thread => thread.name === message.author.tag);
     const thread = threads.first();
     let content = 'New Modmail'
@@ -54,7 +55,7 @@ module.exports = async (modmailChannel, message, client) => {
         }
     } else {
         content = content;
-    }    
+    }
 
     // button
     const replyButton = new ButtonBuilder()

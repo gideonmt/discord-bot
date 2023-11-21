@@ -1,7 +1,3 @@
-// get stuff from settings
-const settings = require('../settings.json');
-const activityStatusEnabled = settings.activityStatusEnabled;
-const activityStatus = settings.activityStatus;
 const { ActivityType } = require('discord.js');
 
 let currentIndex = 0;
@@ -19,6 +15,10 @@ function replace(activityMessage, client) {
 }
 
 module.exports = async (client) => {
+    const config = require('../config/config');
+    const settings = config();
+    const activityStatusEnabled = settings.activityStatusEnabled;
+    const activityStatus = settings.activityStatus;
     if (!activityStatusEnabled) return;
 
     const activityItem = activityStatus[currentIndex];

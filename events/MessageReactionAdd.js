@@ -1,12 +1,9 @@
-const settings = require('../settings.json');
-// const starboardEnabled = settings.starboardEnabled;
-// const starboardChannelId = settings.starboardChannel;
-// const starboardEmojisInput = settings.starboardEmojis;
-// const starboardReactions = settings.starboardReactions;
-const { starboardEnabled, starboardChannel: starboardChannelId, starboardEmojis: starboardEmojisInput, starboardReactions } = settings
-
 module.exports = {
     handleStarboard: async (reaction, client) => {
+        const config = require('../config/config');
+        const settings = config(reaction.guild.id);
+        const { starboardEnabled, starboardChannel: starboardChannelId, starboardEmojis: starboardEmojisInput, starboardReactions } = settings
+
         if (!starboardEnabled || !starboardChannelId || !starboardEmojisInput || !starboardReactions) return;
 
         const message = await reaction.message.fetch();
@@ -24,7 +21,7 @@ module.exports = {
                 return embed.footer && embed.footer.text.includes(message.id);
             });
         });
-        
+
         if (reactionFetch.count === starboardReactions && !correctMessage) {
             const embed = {
                 color: 0xffac33,

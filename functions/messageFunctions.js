@@ -1,7 +1,3 @@
-const settings = require('../settings.json');
-const messageFunctions = settings.messageFunctions;
-const messageFunctionsEnabled = settings.messageFunctionsEnabled;
-
 function replace(messageFunctions, message, client) {
     const replacements = {
         '{client.mention}': `<@${client.user.id}>`,
@@ -29,6 +25,10 @@ function replace(messageFunctions, message, client) {
 }
 
 module.exports = async (message, client) => {
+    const config = require('../config/config');
+    const settings = config(message.guild.id);
+    const messageFunctions = settings.messageFunctions;
+    const messageFunctionsEnabled = settings.messageFunctionsEnabled;
     if (message.author.bot || message.channel.type === 1 || !messageFunctionsEnabled || !messageFunctions) return;
     messageFunctions.forEach(async (messageFunction) => {
         replace(messageFunction, message, client);

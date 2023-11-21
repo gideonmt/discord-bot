@@ -178,7 +178,8 @@ button {
     margin-top: 10px;
 }
 
-button[type="submit"], button#add-message-function{
+button[type="submit"],
+button#add-message-function {
     margin-top: 0;
 }
 
@@ -237,7 +238,8 @@ hr {
     gap: 10px;
 }
 
-.row select, .row input[type="text"] {
+.row select,
+.row input[type="text"] {
     margin-top: 10px;
     padding: 10px;
 }
@@ -288,4 +290,9 @@ table>tbody>tr>th {
 
 section#slash-commands>ul>li {
     margin: 10px 0;
+}
+
+#server-list {
+    list-style: none;
+    padding: 10px;
 }
