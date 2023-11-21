@@ -21,9 +21,10 @@
         - add xp
         - take away xp
 - Mod logs
+    - add modlog settings to website
+        - 
 - Polls
     - ranked
-    - multiple
 - Custom Commands
     - open modal
     - buttons
@@ -34,6 +35,12 @@
     - docs
         - make how to configure better
         - add arrow to the descriptions ass bullet points so people know to click it
+        - add a part about hosting
+            - on your computer
+            - on replit
+            - on google free teir 
+            - on github eduation plan
     - settings
         - add remove button to lists
+        - per guild settings
 - Kahoot type game

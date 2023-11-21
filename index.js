@@ -19,7 +19,7 @@ const events = require('./events/index');
 events(client);
 
 const server = require('./website/server');
-server();
+server(client);
 
 const activityStatus = require('./functions/activityStatus');
 setInterval(() => {
