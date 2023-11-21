@@ -34,5 +34,7 @@
 - Website improvements 
     - docs
         - make how to configure better
+        - add arrow to the descriptions ass bullet points so people know to click it
     - settings
         - add remove button to lists
+- Kahoot type game
