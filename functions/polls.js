@@ -1,4 +1,4 @@
-async function pollAdd(message, options, endTime, type, user) {
+async function pollAdd(message, options, endTime, type, user, permissive) {
 	const Polls = require('./db/dbObjects').Polls;
 	await Polls.sync();
 
@@ -6,6 +6,11 @@ async function pollAdd(message, options, endTime, type, user) {
 	for (const option of options) {
 		optionsArray.push({
 			option: option,
+			votes: [],
+		});
+	} if (permissive === true) {
+		optionsArray.push({
+			option: 'Other',
 			votes: [],
 		});
 	}
@@ -33,6 +38,21 @@ async function pollRemove(message, client) {
 		title: `Poll Results`,
 		description: poll.options.map(opt => `${opt.option}: ${opt.votes.length}`).join('\n'),
 	};
+
+	if (poll.options.some(opt => opt.option === 'Other')) {
+		const otherOptions = poll.options.find(opt => opt.option === 'Other').votes;
+		const otherOptionsValue = [];
+		for (const option of otherOptions) {
+			const optionUser = await client.users.fetch(option.user);
+			otherOptionsValue.push(`${optionUser.username}: ${option.option}`);
+		}
+		if (otherOptions.length > 0) {
+			embed.fields = [{
+				name: 'Other Options',
+				value: otherOptionsValue.join('\n'),
+			}];
+		}
+	}
 
 	user.send({ content: `Your poll has ended.`, embeds: [embed] });
 	poll.destroy();
@@ -63,12 +83,26 @@ async function pollVote(messageObject, user, option, multiple) {
 		option = option
 	}
 
-	const optionObject = poll.options.find(opt => opt.option === option);
+	const optionObject = poll.options.find(opt => opt.option === option) || poll.options.find(opt => opt.option === option.split(': ')[0]);
 
 	let totalVotes = poll.options.reduce((total, option) => total.concat(option.votes), []);
 
 	if (optionObject) {
-		if (totalVotes.includes(user)) {
+		if (option.trim().startsWith('Other')) {
+			const otherOption = option.split(': ')[1];
+			if (totalVotes.includes(user)) {
+				if (optionObject.votes.some(vote => vote === user)) {
+					optionObject.votes = optionObject.votes.filter(vote => vote !== user);
+				} else {
+					for (const opt of poll.options) {
+						opt.votes = opt.votes.filter(vote => vote !== user);
+					}
+					optionObject.votes.push({ user: user, option: otherOption });
+				}
+			} else {
+				optionObject.votes.push({ user: user, option: otherOption });
+			}
+		} else if (totalVotes.includes(user)) {
 			if (optionObject.votes.some(vote => vote === user)) {
 				optionObject.votes = optionObject.votes.filter(vote => vote !== user);
 			} else {

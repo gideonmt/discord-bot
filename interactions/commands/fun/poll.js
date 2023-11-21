@@ -116,6 +116,10 @@ module.exports = {
             const user = interaction.user.id;
             const type = 'straw';
 
+            if (multiple === true && permissive === true) {
+                return interaction.reply({ content: 'A poll cannot be both multiple and permissive.', ephemeral: true });
+            }
+
             let options = [];
             for (let i = 1; i <= 10; i++) {
                 const option = interaction.options.getString(`option-${i}`);
@@ -183,7 +187,7 @@ module.exports = {
 
             interaction.channel.send({ embeds: [embed], components: [selectRow, buttonRow] }).then(fullMessage => {
                 const message = fullMessage.id;
-                pollAdd(message, options, endTime, type, user)
+                pollAdd(message, options, endTime, type, user, permissive)
             });
 
             interaction.reply({ content: `Poll created!`, ephemeral: true });
@@ -192,6 +196,13 @@ module.exports = {
             const permissive = interaction.options.getBoolean('permissive') || false;
             const results = interaction.options.getBoolean('results');
             const timed = interaction.options.getString('timed') || "7d";
+
+            // warn user that this feature is not yet implemented -- remove this when it is
+            interaction.user.send({ content: `:warning: The ranked poll feature is currently a work in progress and does not work.` });
+
+            if (multiple === true && permissive === true) {
+                return interaction.reply({ content: 'A poll cannot be both multiple and permissive.', ephemeral: true });
+            }
 
             let options = [];
             for (let i = 1; i <= 10; i++) {

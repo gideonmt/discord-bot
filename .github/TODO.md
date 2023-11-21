@@ -23,7 +23,6 @@
 - Mod logs
 - Polls
     - ranked
-    - permissive (other)
     - multiple
 - Custom Commands
     - open modal
