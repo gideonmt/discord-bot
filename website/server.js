@@ -28,15 +28,32 @@ module.exports = (client) => {
     startServer(app, port);
 
     app.get('/api/settings', (req, res) => {
-        const data = fs.readFileSync('settings.json');
-        const settings = JSON.parse(data);
-        res.json(settings);
+        const serverId = req.query.serverId;
+        console.log(serverId);
+
+        const filePath = serverId ? `config/${serverId}.json` : 'config/settings.json';
+
+        try {
+            const data = fs.readFileSync(filePath);
+            const settings = JSON.parse(data);
+            res.json(settings);
+        } catch (error) {
+            res.status(500).json({ error: 'Error reading settings file' });
+        }
     });
 
     app.post('/api/settings', (req, res) => {
+        const serverId = req.query.serverId;
         const updatedSettings = req.body;
-        fs.writeFileSync('settings.json', JSON.stringify(updatedSettings, null, 2));
-        res.json({ message: 'Settings updated successfully' });
+
+        const filePath = serverId ? `config/${serverId}.json` : 'config/settings.json';
+
+        try {
+            fs.writeFileSync(filePath, JSON.stringify(updatedSettings, null, 2));
+            res.json({ message: 'Settings updated successfully' });
+        } catch (error) {
+            res.status(500).json({ error: 'Error writing to settings file' });
+        }
     });
 
     app.use((req, res, next) => {
