@@ -1,6 +1,12 @@
 module.exports = (sequelize, DataTypes) => {
     const Sequelize = require('sequelize');
     return sequelize.define('polls', {
+        id: {
+            primaryKey: true,
+            type: Sequelize.UUID,
+            allowNull: false,
+            defaultValue: Sequelize.UUIDV4,
+        },
         message: {
             type: Sequelize.STRING,
             allowNull: false,
